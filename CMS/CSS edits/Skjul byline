@@ -1,0 +1,5 @@
+<style>
+    .byline {
+        display: none;
+    }
+</style>
