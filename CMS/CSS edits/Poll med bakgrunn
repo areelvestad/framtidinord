@@ -1,0 +1,23 @@
+<style>
+section.polly-component {
+  background-color: var(--color-white);
+}
+
+[data-darkmode=on] section.polly-component.polly {
+  background-color: var(--color-black);
+}
+
+[data-darkmode=on] div.polly-list-item {
+ background-color: var(--color-primary); 
+}
+
+[data-darkmode=auto] section.polly-component {
+  background-color: var(--color-black);
+  color: whitesmoke;
+}
+
+[data-darkmode=auto] div.polly-list-item {
+ background-color: var(--color-primary); 
+ color: whitesmoke;
+}
+</style>
