@@ -1,0 +1,104 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Alta-Kv\u00e6nangen 6"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              799035,
+              7776841
+            ],
+            [
+              801027,
+              7777037
+            ],
+            [
+              801519,
+              7772056
+            ],
+            [
+              799527,
+              7771860
+            ],
+            [
+              799035,
+              7776841
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Alta-Kv\u00e6nangen 7"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              800913,
+              7778193
+            ],
+            [
+              802906,
+              7778390
+            ],
+            [
+              803398,
+              7773409
+            ],
+            [
+              801405,
+              7773212
+            ],
+            [
+              800913,
+              7778193
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Alta-Kv\u00e6nangen 8"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              802675,
+              7780721
+            ],
+            [
+              804668,
+              7780918
+            ],
+            [
+              805160,
+              7775937
+            ],
+            [
+              803167,
+              7775740
+            ],
+            [
+              802675,
+              7780721
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}
