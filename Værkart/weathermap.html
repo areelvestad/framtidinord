@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather Map - Nord-Troms</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+    
+        #map {
+            width: 100%;
+            height: 90vh; 
+        }
+    
+        .weather-data {
+            display: inline-block;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            background-color: rgba(255, 255, 255, 0);
+            font-family: 'Roboto';
+            text-shadow: 1px 1px 2px white;
+        }
+        .weather-data img {
+            height: 40px;
+            filter: drop-shadow(2px 5px 3px rgba(0, 0, 0, 0.432));
+        }
+        .weather-data strong {
+            font-size: 1.3em;
+            font-weight: 500;
+            text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
+        }
+        .weather-data {
+            font-size: 1.2em;
+            font-weight: 500;
+            text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script>
+      var map = L.map('map').setView([69.765842, 20.65], 9);
+
+L.tileLayer('https://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=bakgrunnskart_forenklet&zoom={z}&x={x}&y={y}', {
+    attribution: '<a href="https://kartverket.no/">Kartverket</a>, Værdata fra <a href="https://www.met.no/">MET</a>'
+}).addTo(map);
+
+// Initialize the marker cluster group
+var markerClusterGroup = L.markerClusterGroup();
+map.addLayer(markerClusterGroup);
+
+async function fetchWeatherAndDisplay(lat, lon, locationName, priority) {
+    const url = `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${lat}&lon=${lon}`;
+    const options = {
+        headers: {
+            'User-Agent': 'YourAppName/1.0'
+        }
+    };
+
+    try {
+        const response = await fetch(url, options);
+        if (response.ok) {
+            const data = await response.json();
+            const timeseries = data.properties.timeseries[0];
+            const weatherSummary = timeseries.data.next_1_hours.summary.symbol_code;
+            const temperature = timeseries.data.instant.details.air_temperature;
+            const windSpeed = timeseries.data.instant.details.wind_speed;
+            const windDirection = timeseries.data.instant.details.wind_from_direction;
+
+            addWeatherMarker(lat, lon, locationName, weatherSummary, temperature, windSpeed, windDirection);
+        } else {
+            console.error('Failed to fetch weather data:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Failed to fetch weather data:', error);
+    }
+}
+
+function addWeatherMarker(lat, lon, locationName, weatherSummary, temperature, windSpeed, windDirection) {
+    var iconUrl = 'weathericons/weather/png/' + weatherSummary + '.png';
+    var markerHtml = `<div class="weather-data"><img src="${iconUrl}" alt="Weather Icon"><br><strong>${locationName}</strong><br>${temperature}°C, ${windSpeed}m/s</div>, ${windDirection}`;
+
+    var customIcon = L.divIcon({
+        html: markerHtml,
+        iconSize: [130, 80],
+        iconAnchor: [65, 40],
+        className: 'weather-marker'
+    });
+
+    var marker = L.marker([lat, lon], {icon: customIcon});
+    markerClusterGroup.addLayer(marker); // Add marker to the cluster group
+}
+
+fetchWeatherAndDisplay(69.765842, 21.025126, 'Storslett', 1);
+fetchWeatherAndDisplay(69.602897, 20.537404, 'Olderdalen', 1);
+fetchWeatherAndDisplay(69.575626, 20.218722, 'Lyngseidet', 1);
+fetchWeatherAndDisplay(69.392640, 20.268776, 'Skibotn', 1); 
+fetchWeatherAndDisplay(69.494466, 20.830939, 'Birtavarre', 1);
+fetchWeatherAndDisplay(69.748483, 20.488963, 'Djupvik', 1);
+fetchWeatherAndDisplay(70.032074, 20.970250, 'Skjervøy', 1);
+fetchWeatherAndDisplay(69.911197, 20.159309, 'Nord-Lenangen', 1);
+fetchWeatherAndDisplay(69.557280, 21.300423, 'Sappen', 1);
+fetchWeatherAndDisplay(69.663176, 19.815643, 'Svensby', 1);
+fetchWeatherAndDisplay(69.258810, 19.887404, 'Oteren', 1);
+fetchWeatherAndDisplay(69.905265, 21.333867, 'Oksfjord', 1);
+
+
+    </script>
+</body>
+</html>
