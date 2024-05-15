@@ -1,32 +1,74 @@
-<head>
-    <link rel="stylesheet" href="https://www.framtidinord.no/css/snowflake.framtidinord.29d0fbe656e2dc80da87.css">
-</head>
 <style>
-
+.ArticleSummary{
+	border-radius:.5em;
+	padding-bottom: 1.5em;
+	background-color: var(--color-text-inverted);
+}
+.ArticleSummary:after{
+	background:var(--color-primary);
+}
+[data-darkmode=on] .ArticleSummary:after {
+	background-color: var(--color-primary-dark-2);
+	opacity: .5;
+}
+[data-darkmode=auto] .ArticleSummary:after {
+	background-color: var(--color-primary-dark-2);
+	opacity: .5;
+}
+.ArticleSummary h3{
+	color: var(--color-primary);
+}
+[data-darkmode=on] .ArticleSummary h3 {
+	color: #f5f5f5;
+}
+[data-darkmode=auto] .ArticleSummary h3 {
+	color: #f5f5f5;
+}
+.ArticleSummary .List{
+	color: var(--color-primary-dark-1);
+}
+[data-darkmode=on] .ArticleSummary .List {
+	color: #f5f5f5;
+}
+[data-darkmode=auto] .ArticleSummary .List {
+	color: #f5f5f5;
+}
+.ArticleSummary .List li:before{
+	background:var(--color-text);
+	height:5px;
+	width:5px;
+	border-radius: 1em;
+	top:.6em;
+	transform:translate(50%,-50%);
+}
+[data-darkmode=on] .ArticleSummary .List li:before {
+	background-color: #f5f5f5;
+}
+[data-darkmode=auto] .ArticleSummary .List li:before {
+	background-color: #f5f5f5;
+}
+.ArticleSummary label{
+	background:var(--color-primary);
+	border-radius:1em;
+	margin:.9em auto 0 auto;
+	padding:.6em;
+	width: 9.5em;
+}
+[data-darkmode=auto] .ArticleSummary label {
+	background:var(--color-primary-dark-1);
+	color: #f5f5f5;
+}
+[data-darkmode=on] .ArticleSummary label {
+	background:var(--color-primary-dark-1);
+	color: #f5f5f5;
+}
+.ArticleSummary small{
+	color: var(--color-primary-dark-1);
+}
+[data-darkmode=on] .ArticleSummary small {
+	color: #f5f5f5;
+}
+[data-darkmode=auto] .ArticleSummary small {
+	color: #f5f5f5;
+}
 </style>
-
-<div class="ArticleSummary">
-    <h3>Kort oppsummert</h3>
-    <input type="checkbox" id="toggle-summary" name="toggle-summary">
-    <ul class="List">
-        <li>
-            <p>Breeze Troms AS og to andre datterselskap av Breeze AS, er konkurs.</p>
-        </li>
-        <li>
-            <p>Over hundre ansatte er berørte, inkludert 22 faste ansatte i Storfjord.</p>
-        </li>
-        <li>
-            <p>Konkursen skyldes Covid-utbruddet, med tap av 80 prosent av omsetningen over natta, høy inflasjon, økte renter og tapte anbudskonkurranser.</p>
-        </li>
-        <li>
-            <p>Virksomheten var en av hjørnesteinsbedriftene i Storfjord med en omsetning på 31,1 millioner kroner i 2023.</p>
-        </li>
-        <li>
-            <p>Ordføreren håper på en løsning som redder driften videre.</p>
-        </li>
-    </ul>
-    <small>Oppsummeringen er laget av AI-verktøyet ChatGPT og kvalitetssikret av våre journalister</small>
-    <label for="toggle-summary" more="Vis mer" less="Vis mindre" role="button" aria-label="Ekspander innhold">
-        <div></div>
-    </label>
-</div>
