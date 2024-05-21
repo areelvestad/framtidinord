@@ -16,7 +16,6 @@
     }
     
     .section-title {
-        padding-top: 1em;
         font-size: 2em;
         text-align: center;
         display: flex;
@@ -168,6 +167,9 @@
             background-color: rgb(255, 255, 255);
         }
 
+            [data-darkmode=on] .bg-section-2 {background-color: none;}
+            [data-darkmode=auto] .bg-section-2 {background-color: none;}
+
         .phone-mail {
             font-weight: 400;
             transition: all .1s ease-in-out;
@@ -176,14 +178,44 @@
             .phone-mail:hover {
             font-weight: bold;
             }
+
+        @media screen and (max-width: 732px) {
+            .section-1-box {
+                width: 300px;
+            }
+            .section-red {
+                display: flex;
+                flex-direction: column;
+            } 
+            .section-red-box {
+                padding-bottom: .1em;
+                width: 285px;
+                height: 295px;
+            }
+                
+            .red-img-box > img {
+                height: 150px;
+                width: 150px;
+                padding: 0px;
+                margin: 0px;
+            }
+            .section-1-link-red {
+                width: 290px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+        }
     
     </style>
     
-    <section class="section-title" style="background-color: whitesmoke;">
+    <section class="section-title">
         <!-- <h2>Kontakt oss</h2> -->
     </section>
     
-    <div style="background-color: whitesmoke;">
+    <div>
     <div class="section-container-1">
     
         <section class="section-1">
@@ -280,26 +312,24 @@
             </div>
     
         </section>
-        <section class="section-title" style="background-color: whitesmoke;">
-            <!-- <h2>Kontakt oss</h2> -->
-        </section>
+
     </div>
     
     </div>
     
-    <section class="section-title" style="background-color: white;">
-        <br>
-        <h2>Ansatte</h2>
+    <section class="section-title">
+        <h2></h2>
     </section>
 
 <div class="bg-section-2">
     <section class="section-red" style="margin-top: 0;">
+        <h1 style="width: 100%; margin: 0 auto; text-align: center; color: #000; font-size: 2em; padding-top: 1em; padding-bottom: .3em;">Ansatte</h1>
     
-        <a href="https://www.framtidinord.no/" class="section-1-link">
+        <a href="https://www.framtidinord.no/" class="section-1-link section-1-link-red">
             <div class="section-red-box">
                 <div class="red-img-box"><img src="https://fvnmm-editorial-uploads.s3.amazonaws.com/fin-kjetil.jpg" alt="Kjetil" class="red-img"></div>
     
-                <div class="box-title" style="margin-top: 0.6em;">
+                <div class="box-title">
                     Kjetil M. Skog
                 </div>
     
@@ -310,11 +340,11 @@
             </div>
         </a>
     
-        <a href="https://annonseweb.framtidinord.no/nb/" class="section-1-link">
+        <a href="https://annonseweb.framtidinord.no/nb/" class="section-1-link section-1-link-red">
             <div class="section-red-box-marked section-red-box">
                 <div class="red-img-box"><img src="https://fvnmm-editorial-uploads.s3.amazonaws.com/fin-robert.jpg" alt="Robert" class="red-img"></div>
     
-                <div class="box-title" style="margin-top: 0.6em; ;">
+                <div class="box-title">
                     Robert Bjørklund
                 </div>
     
@@ -325,11 +355,11 @@
             </div>
         </a>
 
-        <a href="https://www.framtidinord.no/av/kristina-baatnes-hestdahl" class="section-1-link">
+        <a href="https://www.framtidinord.no/av/kristina-baatnes-hestdahl" class="section-1-link section-1-link-red">
             <div class="section-red-box">
                 <div class="red-img-box"><img src="https://fvnmm-editorial-uploads.s3.amazonaws.com/no-image.jpg" alt="Kristina" class="red-img"></div>
     
-                <div class="box-title" style="margin-top: 0.6em;">
+                <div class="box-title">
                     Kristina Båtnes Hestdahl
                 </div>
     
@@ -340,11 +370,11 @@
             </div>
         </a>
 
-        <a href="https://www.framtidinord.no/av/torbjoern-o-karlsen" class="section-1-link">
+        <a href="https://www.framtidinord.no/av/torbjoern-o-karlsen" class="section-1-link section-1-link-red">
             <div class="section-red-box">
                 <div class="red-img-box"><img src="https://vcdn.polarismedia.no/mm-img/5d5c36b2370f8a0a24a658cc48c29ea057348259bbd62a21073ff63cfc07445a/1920" alt="Torbjørn" class="red-img"></div>
     
-                <div class="box-title" style="margin-top: 0.6em;">
+                <div class="box-title">
                     Torbjørn O. Karlsen
                 </div>
     
@@ -355,11 +385,11 @@
             </div>
         </a>
 
-        <a href="https://www.framtidinord.no/av/isabell-haug" class="section-1-link">
+        <a href="https://www.framtidinord.no/av/isabell-haug" class="section-1-link section-1-link-red">
             <div class="section-red-box">
                 <div class="red-img-box"><img src="https://fvnmm-editorial-uploads.s3.amazonaws.com/no-image.jpg" alt="Isabell" class="red-img"></div>
     
-                <div class="box-title" style="margin-top: 0.6em;">
+                <div class="box-title">
                     Isabell Haug
                 </div>
     
@@ -370,11 +400,11 @@
             </div>
         </a>
 
-        <a href="https://www.framtidinord.no/av/are-bergset-elvestad" class="section-1-link">
+        <a href="https://www.framtidinord.no/av/are-bergset-elvestad" class="section-1-link section-1-link-red">
             <div class="section-red-box">
                 <div class="red-img-box"><img src="https://vcdn.polarismedia.no/mm-img/4ab4a3d5deac3ee2c4805d8355cf98840e0cbee11c12f97ae64d0433d3ee9fc2/1920" alt="Are" class="red-img"></div>
     
-                <div class="box-title" style="margin-top: 0.6em;">
+                <div class="box-title">
                     Are Bergset Elvestad
                 </div>
     
@@ -385,11 +415,11 @@
             </div>
         </a>
 
-        <a href="https://www.framtidinord.no/av/marius-hoe" class="section-1-link">
+        <a href="https://www.framtidinord.no/av/marius-hoe" class="section-1-link section-1-link-red">
             <div class="section-red-box">
                 <div class="red-img-box"><img src="https://fvnmm-editorial-uploads.s3.amazonaws.com/no-image.jpg" alt="Marius" class="red-img"></div>
     
-                <div class="box-title" style="margin-top: 0.6em;">
+                <div class="box-title">
                     Marius Hoe
                 </div>
     
@@ -400,11 +430,11 @@
             </div>
         </a>
 
-        <a href="https://www.framtidinord.no/" class="section-1-link">
+        <a href="https://www.framtidinord.no/" class="section-1-link section-1-link-red">
             <div class="section-red-box">
                 <div class="red-img-box"><img src="https://fvnmm-editorial-uploads.s3.amazonaws.com/no-image.jpg" alt="Stian" class="red-img"></div>
     
-                <div class="box-title" style="margin-top: 0.6em;">
+                <div class="box-title">
                     Stian Pedersen
                 </div>
     
@@ -418,5 +448,5 @@
     </section>
 </div>
 
-    <span style="display: flex; width: 100%; height: 30px; background:white;"></span>
+    <span style="display: flex; width: 100%; height: 30px;"></span>
     
