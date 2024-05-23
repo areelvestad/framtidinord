@@ -1,0 +1,452 @@
+<style>
+
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap');
+    
+    
+    * {
+        font-family: 'Roboto', sans-serif;
+
+        --no-image:https://fvnmm-editorial-uploads.s3.amazonaws.com/no-image.jpg
+        --Robert:https://fvnmm-editorial-uploads.s3.amazonaws.com/fin-robert.jpg
+    }
+    
+    .section-container-1 {
+        margin: 0 auto;  /* Centers the container */
+        max-width: 900px; /* Adjust this value to your needs */
+    }
+    
+    .section-title {
+        font-size: 2em;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+    }
+    
+    .section-1 {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: stretch;
+        justify-content: center;
+    }
+    
+    .section-1-link {
+        text-decoration: none;
+        color: black;
+    }
+    
+    .section-1-box {
+        height: 150px;
+        width: 330px;
+    
+        background-color: rgb(236, 236, 236);
+    
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+    
+        margin: 10px;
+    
+        border-radius: 25px;
+        border: 1px solid rgb(218, 218, 218);
+
+        transition: all .2s ease-in-out;
+    }
+    
+    .section-1-box:hover {
+        background-color: rgb(240, 240, 240);
+        border: 1px solid rgb(167, 167, 167);
+        border-radius: 25px;
+    }
+        .box-button {
+            transition: all .2s ease-in-out;
+        }
+        .box-button:hover {
+            background-color: rgb(64, 80, 117);
+        }
+    
+        .box-title {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin: 0;
+            padding-top: 0.7em;
+            text-align: center;
+        }
+        .box-phone {
+            font-size: 1.2em;
+            font-weight: 400;
+            text-align: center;
+            line-height: 1.5em;
+        }
+        .box-button {
+            background-color: rgb(20, 34, 59);
+            border-radius: 20px;
+    
+            color: whitesmoke;
+            font-size: 1.em;
+            
+            padding-top: 0.7em;
+            padding-bottom: 0.7em;
+            padding-left: 2em;
+            padding-right: 2em;
+            
+            margin-bottom: 1em;
+        }
+    
+    .section-1-textbox {
+        margin: 1em;
+    
+        line-height: 1.1em;
+        font-size: 1.2em;
+        max-width: 500px;
+    }
+        .hilsninger {
+            text-decoration: none;
+            border-bottom: 2px solid black;
+            color: black;
+            font-weight: bold;
+        }
+    
+    .section-red {
+           
+        max-width: 900px;
+        margin: 0 auto;
+        
+        display: flex;
+        flex-wrap: wrap;
+        align-items: stretch;
+        justify-content: center;
+    }
+    
+        .section-red-box {
+
+            scale: 1;
+    
+            height: 350px;
+            width: 330px;
+    
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+    
+            margin: 10px;
+    
+            border-radius: 5%;
+
+            transition: all .2s ease-in-out;
+        }
+            .section-red-box:hover {
+                background-color: whitesmoke;
+                scale: 1.00;
+            }
+    
+            .section-red-box-marked {
+                background-color: rgb(239, 243, 248); 
+            
+                }
+                .section-red-box-marked:hover {
+                    background-color: rgb(219, 230, 247);
+                }
+            
+        .red-img {
+            border-radius: 50%;
+            border: 1px solid rgb(204, 204, 204);
+        }
+
+        .red-img-box {
+            display: flex;
+            justify-content: center;
+            margin-top: 0.8em;
+            width: 100%;
+        }
+
+        .bg-section-2 {
+            display: flex;
+            width: 100%;
+            background-color: rgb(255, 255, 255);
+        }
+
+            [data-darkmode=on] .bg-section-2 {background-color: none;}
+            [data-darkmode=auto] .bg-section-2 {background-color: none;}
+
+        .phone-mail {
+            font-weight: 400;
+            transition: all .1s ease-in-out;
+        }
+
+            .phone-mail:hover {
+            font-weight: bold;
+            }
+
+        @media screen and (max-width: 732px) {
+            .section-1-box {
+                width: 300px;
+            }
+            .section-red {
+                display: flex;
+                flex-direction: column;
+            } 
+            .section-red-box {
+                padding-bottom: .1em;
+                width: 285px;
+                height: 295px;
+            }
+                
+            .red-img-box > img {
+                height: 150px;
+                width: 150px;
+                padding: 0px;
+                margin: 0px;
+            }
+            .section-1-link-red {
+                width: 290px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+        }
+    
+    </style>
+    
+    <section class="section-title">
+        <!-- <h2>Kontakt oss</h2> -->
+    </section>
+    
+    <div>
+    <div class="section-container-1">
+    
+        <section class="section-1">
+
+            <a href="https://tips.framtidinord.no/" class="section-1-link">
+                <div class="section-1-box">
+                    <div class="box-title">
+                        Tips oss
+                    </div>
+                    <div class="box-phone">
+                        Tips, bilder og video
+                    </div>
+                    <div class="box-button">
+                        Tips oss her
+                    </div>
+                </div>
+            </a>
+    
+            <a href="tel:+47 777 66 902" class="section-1-link">
+                <div class="section-1-box">
+                    <div class="box-title">
+                        Tipstelefon
+                    </div>
+                    <div class="box-phone">
+                        777 66 902
+                    </div>
+                    <div class="box-button">
+                        Ring oss
+                    </div>
+                </div>
+            </a>
+    
+            <a href="mailto:tips@framtidinord.no" class="section-1-link">
+                <div class="section-1-box">
+                    <div class="box-title">
+                        Tips oss på epost
+                    </div>
+                    <div class="box-phone">
+                        tips@framtidinord.no
+                    </div>
+                    <div class="box-button">
+                        Send epost
+                    </div>
+                </div>
+            </a>
+    
+            <a href="tel:+47 777 66 900" class="section-1-link">
+                <div class="section-1-box">
+                    <div class="box-title">
+                        Kundesenter
+                    </div>
+                    <div class="box-phone">
+                        777 66 900
+                    </div>
+                    <div class="box-button">
+                        Ring (09.00-15.00)
+                    </div>
+                </div>
+            </a>
+    
+            <a href="mailto:abonnement@framtidinord.no" class="section-1-link">
+                <div class="section-1-box">
+                    <div class="box-title">
+                        Abonnement
+                    </div>
+                    <div class="box-phone">
+                        abonnement@framtidinord.no
+                    </div>
+                    <div class="box-button">
+                        Send epost
+                    </div>
+                </div>
+            </a>
+    
+            <a href="mailto:annonse@framtidinord.no" class="section-1-link">
+                <div class="section-1-box">
+                    <div class="box-title">
+                        Annonse
+                    </div>
+                    <div class="box-phone">
+                        annonse@framtidinord.no
+                    </div>
+                    <div class="box-button">
+                        Send epost
+                    </div>
+                </div>
+            </a>
+    
+            <div class="section-1-textbox" style="display: none;">
+                <div class="1-textbox">
+                    <b>Hilsninger:</b> Legg inn dine hilsninger og gratulasjoner 
+                    <a href="https://folk.framtidinord.no/" class="hilsninger">her</a>. Tjenesten er gratis.<br><br>
+                </div>
+            </div>
+    
+        </section>
+
+    </div>
+    
+    </div>
+    
+    <section class="section-title">
+        <h2></h2>
+    </section>
+
+<div class="bg-section-2">
+    <section class="section-red" style="margin-top: 0;">
+        <h1 style="width: 100%; margin: 0 auto; text-align: center; color: #000; font-size: 2em; padding-top: 1em; padding-bottom: .3em;">Ansatte</h1>
+    
+        <a href="https://www.framtidinord.no/" class="section-1-link section-1-link-red">
+            <div class="section-red-box">
+                <div class="red-img-box"><img src="https://fvnmm-editorial-uploads.s3.amazonaws.com/fin-kjetil.jpg" alt="Kjetil" class="red-img"></div>
+    
+                <div class="box-title">
+                    Kjetil M. Skog
+                </div>
+    
+                <div class="box-phone">
+                    Ansvarlig redaktør - <a class="phone-mail" href="tel:+47 901 97 329" style="text-decoration: none; color: black;">901 97 329</a><br>
+                    <a class="phone-mail" href="mailto: kjetil@framtidinord.no" style="text-decoration: none; color: black;">kjetil@framtidinord.no</a>
+                </div>
+            </div>
+        </a>
+    
+        <a href="https://annonseweb.framtidinord.no/nb/" class="section-1-link section-1-link-red">
+            <div class="section-red-box-marked section-red-box">
+                <div class="red-img-box"><img src="https://fvnmm-editorial-uploads.s3.amazonaws.com/fin-robert.jpg" alt="Robert" class="red-img"></div>
+    
+                <div class="box-title">
+                    Robert Bjørklund
+                </div>
+    
+                <div class="box-phone">
+                    Markedssjef - <a class="phone-mail" href="tel:+47 414 11 599" style="text-decoration: none; color: black;">414 11 599</a><br>
+                    <a class="phone-mail" href="mailto: robert@framtidinord.no" style="text-decoration: none; color: black;">robert@framtidinord.no</a>
+                </div>
+            </div>
+        </a>
+
+        <a href="https://www.framtidinord.no/av/kristina-baatnes-hestdahl" class="section-1-link section-1-link-red">
+            <div class="section-red-box">
+                <div class="red-img-box"><img src="https://fvnmm-editorial-uploads.s3.amazonaws.com/no-image.jpg" alt="Kristina" class="red-img"></div>
+    
+                <div class="box-title">
+                    Kristina Båtnes Hestdahl
+                </div>
+    
+                <div class="box-phone">
+                    Redaksjonsleder - <a class="phone-mail" href="tel:+47 948 58 272" style="text-decoration: none; color: black;">948 58 272</a><br>
+                    <a class="phone-mail" href="mailto: kristina@framtidinord.no" style="text-decoration: none; color: black;">kristina@framtidinord.no</a>
+                </div>
+            </div>
+        </a>
+
+        <a href="https://www.framtidinord.no/av/torbjoern-o-karlsen" class="section-1-link section-1-link-red">
+            <div class="section-red-box">
+                <div class="red-img-box"><img src="https://vcdn.polarismedia.no/mm-img/5d5c36b2370f8a0a24a658cc48c29ea057348259bbd62a21073ff63cfc07445a/1920" alt="Torbjørn" class="red-img"></div>
+    
+                <div class="box-title">
+                    Torbjørn O. Karlsen
+                </div>
+    
+                <div class="box-phone">
+                    Journalist - <a class="phone-mail" href="tel:+47 926 64 354" style="text-decoration: none; color: black;">926 64 354</a><br>
+                    <a class="phone-mail" href="mailto: torbjorn@framtidinord.no" style="text-decoration: none; color: black;">torbjorn@framtidinord.no</a>
+                </div>
+            </div>
+        </a>
+
+        <a href="https://www.framtidinord.no/av/isabell-haug" class="section-1-link section-1-link-red">
+            <div class="section-red-box">
+                <div class="red-img-box"><img src="https://fvnmm-editorial-uploads.s3.amazonaws.com/no-image.jpg" alt="Isabell" class="red-img"></div>
+    
+                <div class="box-title">
+                    Isabell Haug
+                </div>
+    
+                <div class="box-phone">
+                    Journalist - <a class="phone-mail" href="tel:+47 458 52 191" style="text-decoration: none; color: black;">458 52 191</a><br>
+                    <a class="phone-mail" href="mailto: isabell@framtidinord.no" style="text-decoration: none; color: black;">isabell@framtidinord.no</a>
+                </div>
+            </div>
+        </a>
+
+        <a href="https://www.framtidinord.no/av/are-bergset-elvestad" class="section-1-link section-1-link-red">
+            <div class="section-red-box">
+                <div class="red-img-box"><img src="https://vcdn.polarismedia.no/mm-img/4ab4a3d5deac3ee2c4805d8355cf98840e0cbee11c12f97ae64d0433d3ee9fc2/1920" alt="Are" class="red-img"></div>
+    
+                <div class="box-title">
+                    Are Bergset Elvestad
+                </div>
+    
+                <div class="box-phone">
+                    Journalist - <a class="phone-mail" href="tel:+47 401 06 377" style="text-decoration: none; color: black;">401 06 377</a><br>
+                    <a class="phone-mail" href="mailto: are@framtidinord.no" style="text-decoration: none; color: black;">are@framtidinord.no</a>
+                </div>
+            </div>
+        </a>
+
+        <a href="https://www.framtidinord.no/av/marius-hoe" class="section-1-link section-1-link-red">
+            <div class="section-red-box">
+                <div class="red-img-box"><img src="https://fvnmm-editorial-uploads.s3.amazonaws.com/no-image.jpg" alt="Marius" class="red-img"></div>
+    
+                <div class="box-title">
+                    Marius Hoe
+                </div>
+    
+                <div class="box-phone">
+                    Journalist - <a class="phone-mail" href="tel:+47 481 25 398" style="text-decoration: none; color: black;">481 25 398</a><br>
+                    <a class="phone-mail" href="mailto: marius@framtidinord.no" style="text-decoration: none; color: black;">marius@framtidinord.no</a>
+                </div>
+            </div>
+        </a>
+
+        <a href="https://www.framtidinord.no/" class="section-1-link section-1-link-red">
+            <div class="section-red-box">
+                <div class="red-img-box"><img src="https://fvnmm-editorial-uploads.s3.amazonaws.com/no-image.jpg" alt="Stian" class="red-img"></div>
+    
+                <div class="box-title">
+                    Stian Pedersen
+                </div>
+    
+                <div class="box-phone">
+                    Redigerer <a class="phone-mail" href="tel:+47" style="text-decoration: none; color: black;"></a><br>
+                    <a class="phone-mail" href="mailto: stian@framtidinord.no" style="text-decoration: none; color: black;">stian@framtidinord.no</a>
+                </div>
+            </div>
+        </a>
+
+    </section>
+</div>
+
+    <span style="display: flex; width: 100%; height: 30px;"></span>
+    
