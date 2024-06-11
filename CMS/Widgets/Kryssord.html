@@ -1,0 +1,29 @@
+<style>
+    .Article {
+      background: white;
+    }
+    .kryssord-iframe-container {
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        background: none;
+        width: 100%;
+        margin-top: 0;
+        margin-bottom: 1em;
+        height: 955px;
+    }
+    .kryssord-iframe {
+        width: 100%;
+        max-width: 650px;
+        height: 900px;
+        border: none;
+    }
+    @media screen and (max-width:693px) {
+        .kryssord-iframe {
+            height: 1100px;
+        }
+    }
+</style>
+<div class="kryssord-iframe-container">
+    <iframe src="https://tips.framtidinord.no/kryssord" class="kryssord-iframe" id="embedded-site" scrolling="no"></iframe>
+</div>
