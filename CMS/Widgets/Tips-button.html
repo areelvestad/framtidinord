@@ -1,0 +1,108 @@
+<style>
+    .container-dot {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+    .static-dot, .blinking-dot {
+        width: 1em;
+        height: 1em;
+        background-color: red;
+        border-radius: 50%;
+        margin: 0 0.5em;
+    }
+    .blinking-dot {
+        animation: blink 1s infinite;
+        position: absolute;
+    }
+    @keyframes blink {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(2);
+            opacity: 0;
+        }
+    }
+    .container-tips-button {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        font: var(--primary-font);
+        color: var(--text-color);
+        font-weight: 600;
+        background-color: rgb(236, 233, 233);
+        height: 2.5em;
+        width: 300px;
+        margin: 0 auto;
+        border-radius: 3px;
+        border: 1px solid rgba(128, 128, 128, 0.178);
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+    }
+    .container-tips-button:hover {
+        background-color: #ddd;
+        transform: scale(1.05);
+    }
+    .tips-iframe-container {
+        margin: 0 auto;
+        display: none;
+        justify-content: center;
+        background: none;
+        opacity: 0;
+        transition: opacity 0.5s, max-height 0.5s;
+        max-height: 0;
+        overflow: hidden;
+    }
+    .tips-iframe-container.show {
+        display: flex;
+        opacity: 1;
+        max-height: 1200px; /* Ensure max-height is enough to accommodate iframe */
+    }
+    .tips-iframe {
+        width: 100%;
+        max-width: 650px;
+        height: 970px;
+        border: none;
+        border-radius: 1em;
+        margin: 1em;
+    }
+    @media screen and (max-width: 693px) {
+        .tips-iframe {
+            height: 1060px;
+        }
+    }
+</style>
+
+<a class="container-tips-button" onclick="toggleIframe()">
+    <div class="container-dot">
+        <div class="static-dot"></div>
+        <div class="blinking-dot"></div>
+    </div>
+    <div class="tips-button">Vet du noe om saken? Tips oss!</div>
+</a>
+
+<div class="tips-iframe-container" id="tipsIframeContainer">
+    <iframe src="https://tips.framtidinord.no/" class="tips-iframe" id="embedded-site" scrolling="no"></iframe>
+</div>
+
+<script>
+    function toggleIframe() {
+        var iframeContainer = document.getElementById('tipsIframeContainer');
+        if (iframeContainer.classList.contains('show')) {
+            iframeContainer.classList.remove('show');
+            setTimeout(function() {
+                iframeContainer.style.display = 'none';
+            }, 500); // Match the duration of the transition
+        } else {
+            iframeContainer.style.display = 'flex';
+            setTimeout(function() {
+                iframeContainer.classList.add('show');
+            }, 10); // Small delay to allow display: flex to take effect
+        }
+    }
+</script>
