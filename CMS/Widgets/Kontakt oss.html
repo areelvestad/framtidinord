@@ -132,28 +132,11 @@
             font-weight: bold;
             opacity: 0;
             transition: 0.2s ease-in-out;
-            z-index: 950;
-            overflow: hidden;
-        }
-        .ansatt-hover::after {
-            position: absolute;
-            content: '';
-            height: 150px;
-            width: 150px;
-            background-color: rgba(255, 255, 255, 0.301);
-            padding: 2em;
-            top: -20px;
-            z-index: 955;
             backdrop-filter: blur(.1em);
-            transition: .2s ease-in-out;
-            opacity: 0;
         }
             .kontakt-ansatt:hover > .ansatt-hover {
                 opacity: 1;
-                transition: .2s ease-in-out;
-            }
-            .kontakt-ansatt:hover > .ansatt-hover::after {
-                opacity: 1;
+                background-color: rgba(255, 255, 255, 0.486);
             }
             .ansatt-hover > a {
                 filter: drop-shadow(0, 0, 10, whitesmoke);
@@ -167,8 +150,6 @@
                 padding: .4em .8em;
                 border: 1px solid rgba(168, 168, 168, 0.397);
                 transition: .2s ease-in-out;
-                position: relative;
-                z-index: 999;
             }
             .ansatt-hover > a:hover {
                 font-size: 1.1em;
