@@ -1,13 +1,3 @@
-<!-- Nettsider jeg har brukt for å konvertere og redigere GPX/GeoJSON:
-
-https://geojson.io/ -- Rediger GeoJSON
-https://mygeodata.cloud/converter/gpx-to-json/ -- GPX til GeoJSON
-https://karteksport.miljodirektoratet.no/ -- Få tilsendt skuterløypene
-
-
-GeoJson data: navn | løype | status | info
--->
-
 <head>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -48,7 +38,6 @@ GeoJson data: navn | løype | status | info
             margin-top: 0.5em;
             z-index: 999;
             padding: 0.3em;
-            text-shadow: 0px 0px 10px rgb(255, 255, 255);
             background-color: rgba(255, 255, 255, 0.8);
             max-width: 250px;
             width: 250px;
@@ -56,9 +45,24 @@ GeoJson data: navn | løype | status | info
             font-size: 1em;
             font-family: var(--font-primary);
             transition: opacity 0.2s ease-out;
-            text-align: center;
             text-wrap: wrap;
             height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: .5em;
+
+            * {
+                text-align: center;
+            }
+
+            div.info {
+                border-top: 1px dashed gray;
+                padding-top: .5em;
+
+                &:empty {
+                    display: none;
+                }
+            }
         }
     }
 
@@ -75,6 +79,104 @@ GeoJson data: navn | løype | status | info
         img {
             position: absolute;
         }
+    }
+
+    .custom-attribution-control {
+        background: white;
+        padding: 5px;
+        border-radius: 5px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        font-family: var(--font-primary);
+        max-width: 50vw;
+
+        .attribution-icon {
+            font-size: .75rem;
+            font-weight: bold;
+        }
+
+        .attribution-content {
+            margin-top: 5px;
+            font-size: 12px;
+            color: black;
+            text-wrap: wrap;
+            position: relative;
+
+            .close-btn {
+                position: absolute;
+                top: -1.5rem;
+                right: 0;
+            }
+
+            * {
+                display: inline;
+                line-height: normal;
+            }
+
+            p a {
+                inherits: unset;
+                width: fit-content;
+                height: fit-content;
+                background-color: none;
+                border: none;
+                outline: none;
+                color: var(--color-primary);
+                font-weight: 600;
+                margin: unset;
+                padding: unset;
+                line-height: unset;
+            }
+        }
+    }
+
+    .leaflet-control-custom {
+        background: inherit;
+        position: relative;
+
+        .trail-list-button,
+        .trail-list-close {
+            width: 100%;
+            border: none;
+            cursor: pointer;
+            display: block;
+            font-family: var(--font-primary);
+            font-weight: bold;
+            font-size: .75rem;
+            padding: .35rem;
+            background-color: white;
+            color: black;
+        }
+
+        .trail-list-container {
+            max-height: 55svh;
+            max-width: 65vw;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(2px);
+            border-top: 1px solid #ccc;
+            padding-inline: .5rem;
+
+            h3 {
+                margin-bottom: .25rem;
+                margin-top: 1rem;
+                font-size: 1.25rem;
+                font-weight: bold;
+            }
+
+            div>div>div {
+                font-size: 1rem;
+                margin-bottom: .5rem;
+            }
+
+            div>div>div:last-child {
+                border-bottom: 1px dashed slategray;
+                padding-bottom: .5rem;
+            }
+        }
+
+    }
+
+    .trail-list-content {
+        padding: 5px;
     }
 </style>
 
@@ -112,16 +214,108 @@ GeoJson data: navn | løype | status | info
 </div>
 
 <script>
+    var trailStatus = [
+
+        // Kåfjord
+        { kommune: "Kåfjord", løype: "Løype 1", status: "stengt", info: "" },
+        { kommune: "Kåfjord", løype: "Løype 2", status: "stengt", info: "" },
+        { kommune: "Kåfjord", løype: "Løype 3", status: "delvis åpen", info: "Åpen fra Birtavarre til Cock-hytta" },
+        { kommune: "Kåfjord", løype: "Løype 4a", status: "åpen", info: "" },
+        { kommune: "Kåfjord", løype: "Løype 4b", status: "delvis åpen", info: "Åpen fram til Røde Kors hytta" },
+        { kommune: "Kåfjord", løype: "Løype 5", status: "stengt", info: "" },
+        { kommune: "Kåfjord", løype: "Løype 6", status: "stengt", info: "" },
+        { kommune: "Kåfjord", løype: "Løype 7", status: "åpen", info: "" },
+        { kommune: "Kåfjord", løype: "Løype 8", status: "stengt", info: "" },
+        { kommune: "Kåfjord", løype: "Løype 9", status: "stengt", info: "" },
+
+        // Lyngen
+        { kommune: "Lyngen", løype: "Løype 1A", status: "delvis åpen", info: "Fra Eidsstranda til krysset til 1C" },
+        { kommune: "Lyngen", løype: "Løype 1AD", status: "stengt", info: "" },
+        { kommune: "Lyngen", løype: "Løype 1AF", status: "delvis åpen", info: "" },
+        { kommune: "Lyngen", løype: "Løype 1B", status: "delvis åpen", info: "Er åpen til krysset til 1C" },
+        { kommune: "Lyngen", løype: "Løype 1C", status: "åpen", info: "" },
+        { kommune: "Lyngen", løype: "Løype 1CF", status: "åpen", info: "" },
+        { kommune: "Lyngen", løype: "Løype 1D", status: "stengt", info: "" },
+        { kommune: "Lyngen", løype: "Løype 1E", status: "stengt", info: "" },
+        { kommune: "Lyngen", løype: "Løype 1F", status: "delvis åpen", info: "Løypestart er åpen fra fotballbanen i Nord-Lenangen" },
+        { kommune: "Lyngen", løype: "Løype 1G", status: "stengt", info: "" },
+        { kommune: "Lyngen", løype: "Løype 2A", status: "åpen", info: "" },
+        { kommune: "Lyngen", løype: "Løype 2B", status: "åpen", info: "" },
+        { kommune: "Lyngen", løype: "Løype 3", status: "åpen", info: "" },
+
+        // Nordreisa
+        { kommune: "Nordreisa", løype: "Løype 1", status: "delvis åpen", info: "Fram til Geatkkutjávri. Kjør forsiktig, det kan være stein i løypa" },
+        { kommune: "Nordreisa", løype: "Løype 2", status: "åpen", info: "" },
+        { kommune: "Nordreisa", løype: "Løype 3", status: "stengt", info: "" },
+        { kommune: "Nordreisa", løype: "Løype 4", status: "delvis åpen", info: "Åpen fra Vassbotn til Bjørnskarvannet" },
+        { kommune: "Nordreisa", løype: "Løype 5", status: "stengt", info: "" },
+        { kommune: "Nordreisa", løype: "Løype 6", status: "stengt", info: "" },
+        { kommune: "Nordreisa", løype: "Løype 7", status: "stengt", info: "" },
+        { kommune: "Nordreisa", løype: "Løype 8", status: "stengt", info: "" },
+        { kommune: "Nordreisa", løype: "Løype 9", status: "åpen", info: "" },
+        { kommune: "Nordreisa", løype: "Løype 10", status: "stengt", info: "" },
+        { kommune: "Nordreisa", løype: "Løype 11", status: "stengt", info: "" },
+        { kommune: "Nordreisa", løype: "Løype 12", status: "åpen", info: "" },
+        { kommune: "Nordreisa", løype: "Løype 13", status: "delvis åpen", info: "Åpen til Sikkájávri og ca. 2 km mot Pilteri" },
+        { kommune: "Nordreisa", løype: "Løype 14", status: "åpen", info: "" },
+        { kommune: "Nordreisa", løype: "Løype 15", status: "åpen", info: "" },
+        { kommune: "Nordreisa", løype: "Løype 16", status: "delvis åpen", info: "Løypa er åpen til Rágasjohka" },
+        { kommune: "Nordreisa", løype: "Løype 16 (Kautokeino)", status: "stengt", info: "" },
+        { kommune: "Nordreisa", løype: "Løype 17", status: "stengt", info: "" },
+        { kommune: "Nordreisa", løype: "Løype 17 (Kautokeino)", status: "stengt", info: "" },
+
+        // Skjervøy
+        { kommune: "Skjervøy", løype: "Løype 1", status: "åpen", info: "" },
+        { kommune: "Skjervøy", løype: "Løype 2", status: "stengt", info: "" },
+        { kommune: "Skjervøy", løype: "Løype 3", status: "stengt", info: "" },
+        { kommune: "Skjervøy", løype: "Løype 4", status: "stengt", info: "" },
+
+        // Storfjord
+        { kommune: "Storfjord", løype: "Løype 1", status: "stengt", info: "" },
+        { kommune: "Storfjord", løype: "Løype 2", status: "stengt", info: "" },
+        { kommune: "Storfjord", løype: "Løype 3", status: "stengt", info: "" },
+        { kommune: "Storfjord", løype: "Løype 4", status: "stengt", info: "" },
+        { kommune: "Storfjord", løype: "Løype 5", status: "delvis åpen", info: "Fra Skibotn til Trollvik" },
+
+        //Kvænangen
+        { kommune: "Kvænangen", løype: "Løype 1", status: "åpen", info: "" },
+        { kommune: "Kvænangen", løype: "Løype 2", status: "delvis åpen", info: "Åpen opp til gapahuken (Finnskia)" },
+        { kommune: "Kvænangen", løype: "Løype 3", status: "stengt", info: "" },
+        { kommune: "Kvænangen", løype: "Løype 4", status: "stengt", info: "" },
+        { kommune: "Kvænangen", løype: "Løype 5 og 8", status: "stengt", info: "" },
+        { kommune: "Kvænangen", løype: "Løype 6", status: "stengt", info: "" },
+        { kommune: "Kvænangen", løype: "Løype 7", status: "stengt", info: "" },
+        { kommune: "Kvænangen", løype: "Løype 9", status: "stengt", info: "" },
+        { kommune: "Kvænangen", løype: "Løype 10", status: "stengt", info: "" },
+        { kommune: "Kvænangen", løype: "Løype 11", status: "åpen", info: "" },
+        { kommune: "Kvænangen", løype: "Løype 12", status: "stengt", info: "" },
+        { kommune: "Kvænangen", løype: "Løype 13", status: "stengt", info: "" },
+        { kommune: "Kvænangen", løype: "Løype 14", status: "stengt", info: "" },
+        { kommune: "Kvænangen", løype: "Løype 15", status: "stengt", info: "" },
+        { kommune: "Kvænangen", løype: "Løype 16", status: "stengt", info: "" },
+        { kommune: "Kvænangen", løype: "Løype 17", status: "stengt", info: "" },
+        { kommune: "Kvænangen", løype: "Løype 18", status: "stengt", info: "" },
+        { kommune: "Kvænangen", løype: "Løype 19", status: "stengt", info: "" },
+        { kommune: "Kvænangen", løype: "Løype 20", status: "åpen", info: "" },
+        { kommune: "Kvænangen", løype: "Løype 21", status: "delvis åpen", info: "Åpen fra Indre Valan til Langvannet" }
+    ];
+
+    const canvasRenderer = L.canvas({
+        tolerance: 5
+    });
+
     var map = L.map("map", {
-        center: [69.65, 21.57],
+        center: [69.704, 21.142],
         zoom: 7,
         zoomSnap: 0.1,
         tap: true,
         tapTolerance: 45,
         maxZoom: 14,
+        renderer: canvasRenderer,
+        attributionControl: false
     });
 
-    var topo4graatone = L.tileLayer(
+    var topo4 = L.tileLayer(
         "https://cache.kartverket.no/v1/wmts/1.0.0/topo/default/webmercator/{z}/{y}/{x}.png",
         {
             attribution: '<a href="http://www.kartverket.no/">Kartverket</a>',
@@ -129,7 +323,7 @@ GeoJson data: navn | løype | status | info
         }
     );
 
-    var topo4 = L.tileLayer(
+    var topo4graatone = L.tileLayer(
         "https://cache.kartverket.no/v1/wmts/1.0.0/topograatone/default/webmercator/{z}/{y}/{x}.png",
         {
             attribution: '<a href="http://www.kartverket.no/">Kartverket</a>',
@@ -138,20 +332,6 @@ GeoJson data: navn | løype | status | info
     );
 
 
-    var trailStatus = [
-        { kommune: "Nordreisa", løype: "Løype 1", status: "delvis åpen", info: "Fram til Geatkkutjávri. Kjør forsiktig, det kan være stein i løypa" },
-        { kommune: "Nordreisa", løype: "Løype 4", status: "delvis åpen", info: "Åpen fra Vassbotn til Bjørnskarvannet" },
-        { kommune: "Nordreisa", løype: "Løype 13", status: "delvis åpen", info: "Åpen til Sikájávri og ca. 2 km mot Pilteri" },
-
-        { kommune: "Kvænangen", løype: "Løype 20", status: "åpen", info: "" },
-
-        { kommune: "Lyngen", løype: "Løype 1B", status: "åpen", info: "" },
-        { kommune: "Lyngen", løype: "Løype 1C", status: "åpen", info: "" },
-        { kommune: "Lyngen", løype: "Løype 1F", status: "åpen", info: "" },
-        { kommune: "Lyngen", løype: "Løype 2A", status: "åpen", info: "Fra Svensby til Trollvannet-Dalbottenberget er åpen. Dalbottenberget til Storsteinnes er fortsatt stengt" },
-        { kommune: "Lyngen", løype: "Løype 2B", status: "delvis", info: "Fra Svensby til Trollvannet-Dalbottenberget er åpen. Dalbottenberget til Storsteinnes er fortsatt stengt" },
-        { kommune: "Lyngen", løype: "Løype 3", status: "åpen", info: "" },
-    ];
 
     var styleFunction = function (feature) {
         var statusItem = trailStatus.find(
@@ -160,7 +340,7 @@ GeoJson data: navn | løype | status | info
                 item.løype === feature.properties.løype
         );
 
-        var color = "#ff4444";
+        var color = "#999";
         if (statusItem) {
             switch (statusItem.status) {
                 case "åpen":
@@ -168,6 +348,9 @@ GeoJson data: navn | løype | status | info
                     break;
                 case "delvis åpen":
                     color = "#ffe134";
+                    break;
+                case "stengt":
+                    color = "#ff4444";
                     break;
             }
         }
@@ -177,7 +360,6 @@ GeoJson data: navn | løype | status | info
             weight: 2,
             lineJoin: "miter",
             lineCap: "round",
-            smoothFactor: 2,
             interactive: true,
         };
     };
@@ -185,7 +367,6 @@ GeoJson data: navn | løype | status | info
     topo4.addTo(map);
 
     let geoJsonLayer;
-
 
     var onEachFeature = function (feature, layer) {
         layer.on({
@@ -207,7 +388,7 @@ GeoJson data: navn | løype | status | info
                 infoBox.style.opacity = "0.5";
 
                 setTimeout(function () {
-                    infoBox.innerHTML = `<b>${feature.properties.kommune}: ${feature.properties.løype}</b> ${navn} er ${status}.<br><i>${info}</i>`;
+                    infoBox.innerHTML = `<div class="track"><b>${feature.properties.kommune}:</b> ${feature.properties.løype} ${navn} er ${status}.</div><div class="info">${info}</div>`;
                     infoBox.style.opacity = "1";
                 }, 100);
             },
@@ -225,30 +406,45 @@ GeoJson data: navn | løype | status | info
     };
 
     const geoJsonUrl =
-        "https://fvnmm-editorial-uploads.s3.amazonaws.com/files/4af4bd7570275d5cba6247f2291b5324e3b503d2c8679425e71008fdbedd2bf1.geojson";
-
+        "https://fvnmm-editorial-uploads.s3.amazonaws.com/files/4b3178cd08a2eaf99d86fbe106b8301615dcccaeee19fdc5967c5730134f69f8.geojson";
 
     fetch(geoJsonUrl)
         .then((response) => response.json())
         .then((data) => {
+
             L.geoJSON(data, {
                 style: function (feature) {
                     return {
                         color: "black",
                         weight: 5,
                         opacity: 1,
-                        interactive: false,
-                        smoothFactor: 2,
+                        interactive: false
                     };
                 },
+                renderer: canvasRenderer,
             }).addTo(map);
 
             geoJsonLayer = L.geoJSON(data, {
                 style: styleFunction,
                 onEachFeature: onEachFeature,
+                renderer: canvasRenderer,
             }).addTo(map);
+
+
+            map.invalidateSize();
         })
+
         .catch((error) => console.error("Error loading GeoJSON:", error));
+
+    window.addEventListener("load", function () {
+        setTimeout(() => {
+            map.invalidateSize();
+            if (geoJsonLayer) {
+                const bounds = geoJsonLayer.getBounds();
+                map.fitBounds(bounds);
+            }
+        }, 500);
+    });
 
 
     map.on("click", function (e) {
@@ -257,19 +453,159 @@ GeoJson data: navn | løype | status | info
     });
 
     map.on("enterFullscreen", function () {
-        if (window.console) window.console.log("enterFullscreen");
         var infoBox = document.getElementById("info-box");
         infoBox.style.opacity = "1";
     });
 
     var baseLayers = {
-        Grå: topo4,
-        Farger: topo4graatone,
-
+        Farger: topo4,
+        Grå: topo4graatone,
     };
 
     layercontrol = L.control.layers(baseLayers, {}, {
         position: "bottomleft",
     });
+
+    let activeControl = null;
+
+    const CustomAttribution = L.Control.extend({
+        onAdd: function (map) {
+            const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control custom-attribution-control');
+
+            const icon = L.DomUtil.create('span', 'attribution-icon', container);
+            icon.innerHTML = 'Om kartet ⓘ';
+            icon.style.cursor = 'pointer';
+
+            const attributionContent = L.DomUtil.create('div', 'attribution-content', container);
+            attributionContent.innerHTML = `
+            <button class="close-btn">&times;</button>
+            <p>Laget med <a href="https://leafletjs.com/">Leaflet</a></p><br>
+            <p>Kartdata fra <a href="https://kartverket.no">Kartverket</a> og <a href="https://miljodirektoratet.no">Miljødirektoratet</a>.</p><br><br>
+            <p>Status på løypene oppdateres manuelt. Sjekk kommunenes nettside for gjeldende status.</p><br><br>
+            <p><a href="https://kvanangen.custompublish.com/snoeskuterloeyper-i-kvaenangen.6430361-582683.html">Kvænangen</a> | 
+                <a href="https://www.nordreisa.kommune.no/status-snoeskuterloeyper.538285.no.html">Nordreisa</a> | 
+                <a href="https://www.kafjord.kommune.no/oversikt-over-og-informasjon-om-scooterloeypene-i-kaafjord.6172975-422935.html">Kåfjord</a> | 
+                <a href="https://www.lyngen.kommune.no/scooterloeyper.588250.no.html">Lyngen</a> | 
+                <a href="https://www.storfjord.kommune.no/snoeskuterloeyper.575197.no.html">Storfjord</a> | 
+                <a href="https://www.skjervoy.kommune.no/">Skjervøy</a></p>
+            `
+        ;
+            attributionContent.style.display = 'none';
+
+            L.DomEvent.on(icon, 'click', function (e) {
+                L.DomEvent.stopPropagation(e);
+                if (activeControl && activeControl !== attributionContent) {
+                    activeControl.style.display = 'none';
+                }
+                attributionContent.style.display =
+                    attributionContent.style.display === 'none' ? 'block' : 'none';
+                activeControl = attributionContent.style.display === 'block' ? attributionContent : null;
+            });
+
+            const closeButton = attributionContent.querySelector('.close-btn');
+            L.DomEvent.on(closeButton, 'click', function (e) {
+                L.DomEvent.stopPropagation(e);
+                attributionContent.style.display = 'none';
+                activeControl = null;
+            });
+
+            map.on('click', function () {
+                if (activeControl) {
+                    activeControl.style.display = 'none';
+                    activeControl = null;
+                }
+            });
+
+            return container;
+        }
+    });
+
+    L.Control.TrailList = L.Control.extend({
+        onAdd: function (map) {
+            const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+
+            const button = L.DomUtil.create('button', 'trail-list-button', container);
+            button.innerHTML = 'Status på løypenettet';
+
+            const listContainer = L.DomUtil.create('div', 'trail-list-container', container);
+            listContainer.style.display = 'none';
+
+            const listContent = L.DomUtil.create('div', 'trail-list-content', listContainer);
+            this.updateList(listContent);
+
+            L.DomEvent.on(button, 'click', function (e) {
+                L.DomEvent.stopPropagation(e);
+                if (activeControl && activeControl !== listContainer) {
+                    activeControl.style.display = 'none';
+                }
+                const listVisible = listContainer.style.display !== 'none';
+                listContainer.style.display = listVisible ? 'none' : 'block';
+                button.innerHTML = listVisible ? 'Status på løypenettet' : 'Skjul status';
+                activeControl = listContainer.style.display === 'block' ? listContainer : null;
+            });
+
+            map.on('click', function () {
+                if (activeControl) {
+                    activeControl.style.display = 'none';
+                    activeControl = null;
+                    button.innerHTML = 'Status på løypenettet';
+                }
+            });
+
+            L.DomEvent.on(listContainer, 'mouseover', function () {
+                map.dragging.disable();
+                map.touchZoom.disable();
+            });
+
+            L.DomEvent.on(listContainer, 'mouseout', function () {
+                map.dragging.enable();
+                map.touchZoom.enable();
+            });
+
+            L.DomEvent.on(listContainer, 'touchstart', function () {
+                map.dragging.disable();
+                map.touchZoom.disable();
+            });
+
+            L.DomEvent.on(listContainer, 'touchend', function () {
+                map.dragging.enable();
+                map.touchZoom.enable();
+            });
+
+            return container;
+        },
+
+        updateList: function (listContent) {
+            listContent.innerHTML = '';
+            const groupedTrails = trailStatus.filter(trail => trail.status === 'åpen' || trail.status === 'delvis åpen')
+                .reduce((acc, trail) => {
+                    if (!acc[trail.kommune]) {
+                        acc[trail.kommune] = [];
+                    }
+                    acc[trail.kommune].push(trail);
+                    return acc;
+                }, {});
+
+            Object.keys(groupedTrails).forEach(kommune => {
+                const kommuneDiv = document.createElement('div');
+                kommuneDiv.innerHTML = `<h3>${kommune}</h3>`;
+                groupedTrails[kommune].forEach(trail => {
+                    const trailDiv = document.createElement('div');
+                    trailDiv.innerHTML = `<strong>• ${trail.løype}</strong> er ${trail.status}. ${trail.info}`;
+                    kommuneDiv.appendChild(trailDiv);
+                });
+                listContent.appendChild(kommuneDiv);
+            });
+        }
+    });
+
+    L.control.trailList = function (opts) {
+        return new L.Control.TrailList(opts);
+    }
+
+    map.addControl(L.control.trailList({ position: 'bottomleft' }));
+
+    map.addControl(new CustomAttribution({ position: 'bottomright' }));
+
     layercontrol.addTo(map);
 </script>
