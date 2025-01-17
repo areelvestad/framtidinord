@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scoreboard Control Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .control-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .control-panel div {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        label {
+            width: 100px;
+        }
+        button {
+            padding: 5px 10px;
+            font-size: 16px;
+        }
+        input[type="text"], input[type="number"] {
+            padding: 5px;
+            font-size: 16px;
+            width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <div class="control-panel">
+        <div>
+            <label for="team1-name-input">Team 1 Name:</label>
+            <input type="text" id="team1-name-input" placeholder="Enter Team 1 Name">
+        </div>
+        <div>
+            <label for="team2-name-input">Team 2 Name:</label>
+            <input type="text" id="team2-name-input" placeholder="Enter Team 2 Name">
+        </div>
+        <div>
+            <label>Team 1 Score:</label>
+            <button id="team1-minus">-</button>
+            <span id="team1-score-display">0</span>
+            <button id="team1-plus">+</button>
+        </div>
+        <div>
+            <label>Team 2 Score:</label>
+            <button id="team2-minus">-</button>
+            <span id="team2-score-display">0</span>
+            <button id="team2-plus">+</button>
+        </div>
+        <div>
+            <label for="time-input">Set Time:</label>
+            <input type="text" id="time-input" placeholder="mm:ss">
+            <button id="set-time">Set</button>
+        </div>
+        <div>
+            <button id="start-timer">Start</button>
+            <button id="pause-timer">Pause</button>
+            <button id="reset-timer">Reset</button>
+        </div>
+        <div>
+            <span>Current Time: </span>
+            <span id="current-time-display">90:00</span>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const team1NameInput = document.getElementById('team1-name-input');
+    const team2NameInput = document.getElementById('team2-name-input');
+    const team1ScoreDisplay = document.getElementById('team1-score-display');
+    const team2ScoreDisplay = document.getElementById('team2-score-display');
+    const currentTimeDisplay = document.getElementById('current-time-display');
+    const timeInput = document.getElementById('time-input');
+
+    // Initialize variables and attach event listeners as before
+    let team1Score = 0;
+    let team2Score = 0;
+    let timerInterval;
+    let currentTime = 5400; // Default time in seconds (90 minutes)
+
+    function updateScoreDisplay() {
+        team1ScoreDisplay.textContent = team1Score;
+        team2ScoreDisplay.textContent = team2Score;
+    }
+
+    function formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    function updateTimerDisplay() {
+        currentTimeDisplay.textContent = formatTime(currentTime);
+    }
+
+    document.getElementById('team1-plus').addEventListener('click', () => {
+        team1Score++;
+        updateScoreDisplay();
+    });
+
+    document.getElementById('team1-minus').addEventListener('click', () => {
+        if (team1Score > 0) team1Score--;
+        updateScoreDisplay();
+    });
+
+    document.getElementById('team2-plus').addEventListener('click', () => {
+        team2Score++;
+        updateScoreDisplay();
+    });
+
+    document.getElementById('team2-minus').addEventListener('click', () => {
+        if (team2Score > 0) team2Score--;
+        updateScoreDisplay();
+    });
+
+    document.getElementById('set-time').addEventListener('click', () => {
+        const [mins, secs] = timeInput.value.split(':').map(Number);
+        currentTime = mins * 60 + secs;
+        updateTimerDisplay();
+    });
+
+    document.getElementById('start-timer').addEventListener('click', () => {
+        if (!timerInterval) {
+            timerInterval = setInterval(() => {
+                if (currentTime > 0) {
+                    currentTime--;
+                    updateTimerDisplay();
+                } else {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                }
+            }, 1000);
+        }
+    });
+
+    document.getElementById('pause-timer').addEventListener('click', () => {
+        clearInterval(timerInterval);
+        timerInterval = null;
+    });
+
+    document.getElementById('reset-timer').addEventListener('click', () => {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        currentTime = 5400;
+        updateTimerDisplay();
+    });
+
+    team1NameInput.addEventListener('input', () => {
+    sendMessage('team1-name', team1NameInput.value); // Only send the message via WebSocket
+});
+
+
+    team2NameInput.addEventListener('input', () => {
+        document.getElementById('team2-name').textContent = team2NameInput.value;
+    });
+
+    updateScoreDisplay();
+    updateTimerDisplay();
+
+    const ws = new WebSocket('ws://localhost:8080');
+
+    function sendMessage(type, value) {
+        ws.send(JSON.stringify({ type, value }));
+    }
+
+    team1NameInput.addEventListener('input', () => {
+        sendMessage('team1-name', team1NameInput.value);
+    });
+
+    team2NameInput.addEventListener('input', () => {
+        sendMessage('team2-name', team2NameInput.value);
+    });
+
+    document.getElementById('team1-plus').addEventListener('click', () => {
+        team1Score++;
+        updateScoreDisplay();
+        sendMessage('team1-score', team1Score);
+    });
+
+    // Similar WebSocket messages for other actions...
+});
+
+    </script>
+</body>
+</html>
