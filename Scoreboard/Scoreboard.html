@@ -19,31 +19,45 @@
         </div>
     </div>
     <div class="time">
-        <span id="time">90:00</span>
+        <span id="time">00:00</span>
     </div>
 </div>
 <script>
     const ws = new WebSocket('ws://localhost:8080');
 
-ws.onmessage = (event) => {
-    const message = JSON.parse(event.data);
-    switch (message.type) {
-        case 'team1-name':
-            document.getElementById('team1-name').textContent = message.value;
-            break;
-        case 'team2-name':
-            document.getElementById('team2-name').textContent = message.value;
-            break;
-        case 'team1-score':
-            document.getElementById('team1-score').textContent = message.value;
-            break;
-        case 'team2-score':
-            document.getElementById('team2-score').textContent = message.value;
-            break;
-        case 'time':
-            document.getElementById('time').textContent = message.value;
-            break;
-    }
-};
+    ws.onmessage = async (event) => {
+        let message;
+        if (event.data instanceof Blob) {
+            const text = await event.data.text();
+            message = JSON.parse(text);
+        } else {
+            message = JSON.parse(event.data);
+        }
+
+        switch (message.type) {
+            case 'team1-name':
+                document.getElementById('team1-name').textContent = message.value;
+                break;
+            case 'team2-name':
+                document.getElementById('team2-name').textContent = message.value;
+                break;
+            case 'team1-score':
+                document.getElementById('team1-score').textContent = message.value;
+                break;
+            case 'team2-score':
+                document.getElementById('team2-score').textContent = message.value;
+                break;
+            case 'time':
+                document.getElementById('time').textContent = message.value;
+                break;
+            case 'team1-color':
+                document.documentElement.style.setProperty('--team1-color', message.value);
+                break;
+            case 'team2-color':
+                document.documentElement.style.setProperty('--team2-color', message.value);
+                break;
+
+        }
+    };
 
 </script>

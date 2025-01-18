@@ -1,193 +1,303 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scoreboard Control Panel</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial';
             margin: 20px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 1rem;
+            background: rgb(41, 41, 41);
         }
+
         .control-panel {
             display: flex;
             flex-direction: column;
             gap: 20px;
+
+            background: whitesmoke;
+            padding: 15px;
+            border-radius: 1rem;
         }
+
+        h1 {
+            margin: unset;
+            padding: unset;
+            width: 100%;
+            border-bottom: 1px solid gray;
+            text-align: center;
+            font-family: 'Roboto';
+            font-weight: 900;
+        }
+
         .control-panel div {
             display: flex;
             align-items: center;
             gap: 10px;
         }
+
         label {
             width: 100px;
         }
+
         button {
             padding: 5px 10px;
             font-size: 16px;
         }
-        input[type="text"], input[type="number"] {
+
+        #start-timer {
+            width: 100%;
+        }
+
+        input[type="text"],
+        input[type="number"] {
             padding: 5px;
             font-size: 16px;
             width: 150px;
         }
+
+        select {
+            padding: 5px;
+            font-size: 16px;
+            width: 150px;
+            color: gray;
+
+            option {
+                color: black;
+            }
+        }
+
+        .tidsur {
+            border-radius: 5px;
+            font-weight: 10;
+
+            :nth-child(1) {
+                font-weight: bold
+            }
+        }
+
+        iframe {
+            overflow: hidden;
+            width: 573px;
+            height: 78px;
+        }
     </style>
 </head>
+
 <body>
     <div class="control-panel">
+        <h1>Scoreboard control</h1>
         <div>
-            <label for="team1-name-input">Team 1 Name:</label>
-            <input type="text" id="team1-name-input" placeholder="Enter Team 1 Name">
+            <label for="team1-name-input">Lag 1:</label>
+            <input type="text" id="team1-name-input" placeholder="Fyll inn navn">
+            <select id="team1-color-picker">
+                <option>Velg farge</option>
+                <option value="#dd634d">Teigen Cup</option>
+                <option value="#456597">FiN</option>
+                <option value="#e5e5e5">Nordreisa</option>
+                <option value="#e23637">Lyngen RØD</option>
+                <option value="#2471b9">Lyngen BLÅ</option>
+                <option value="#0084ca">Skjervøy</option>
+                <option value="#e23637">Storfjord</option>
+                <option value="#b72441">Indre Kåfjord</option>
+                <option value="#2cb53e">Furuflaten</option>
+            </select>
         </div>
         <div>
-            <label for="team2-name-input">Team 2 Name:</label>
-            <input type="text" id="team2-name-input" placeholder="Enter Team 2 Name">
+            <label for="team2-name-input">Lag 2:</label>
+            <input type="text" id="team2-name-input" placeholder="Fyll inn navn">
+            <select id="team2-color-picker">
+                <option value="#dd634d">Teigen Cup</option>
+                <option value="#456597">FiN</option>
+                <option value="#e5e5e5">Nordreisa</option>
+                <option value="#e23637">Lyngen RØD</option>
+                <option value="#2471b9">Lyngen BLÅ</option>
+                <option value="#0084ca">Skjervøy</option>
+                <option value="#e23637">Storfjord</option>
+                <option value="#b72441">Indre Kåfjord</option>
+                <option value="#2cb53e">Furuflaten</option>
+            </select>
         </div>
+
         <div>
-            <label>Team 1 Score:</label>
+            <label>Lag 1 mål:</label>
             <button id="team1-minus">-</button>
             <span id="team1-score-display">0</span>
             <button id="team1-plus">+</button>
         </div>
         <div>
-            <label>Team 2 Score:</label>
+            <label>Lag 2 mål:</label>
             <button id="team2-minus">-</button>
             <span id="team2-score-display">0</span>
             <button id="team2-plus">+</button>
         </div>
         <div>
-            <label for="time-input">Set Time:</label>
+            <label for="time-input">Sett tiden til:</label>
             <input type="text" id="time-input" placeholder="mm:ss">
-            <button id="set-time">Set</button>
+            <button id="set-time">Sett</button>
         </div>
         <div>
             <button id="start-timer">Start</button>
-            <button id="pause-timer">Pause</button>
-            <button id="reset-timer">Reset</button>
+            <br>
+            <div>
+                <button id="pause-timer">Pause</button>
+                <button id="reset-timer">Reset</button>
+            </div>
         </div>
-        <div>
-            <span>Current Time: </span>
+        <div class="tidsur">
+            <span>
+                Tiden nå:
+            </span>
             <span id="current-time-display">90:00</span>
         </div>
     </div>
 
+    <iframe src="http://localhost:8080/scoreboard.html" frameborder="0"></iframe>
+
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-    const team1NameInput = document.getElementById('team1-name-input');
-    const team2NameInput = document.getElementById('team2-name-input');
-    const team1ScoreDisplay = document.getElementById('team1-score-display');
-    const team2ScoreDisplay = document.getElementById('team2-score-display');
-    const currentTimeDisplay = document.getElementById('current-time-display');
-    const timeInput = document.getElementById('time-input');
+        document.addEventListener('DOMContentLoaded', () => {
+            const team1NameInput = document.getElementById('team1-name-input');
+            const team2NameInput = document.getElementById('team2-name-input');
+            const team1ScoreDisplay = document.getElementById('team1-score-display');
+            const team2ScoreDisplay = document.getElementById('team2-score-display');
+            const currentTimeDisplay = document.getElementById('current-time-display');
+            const timeInput = document.getElementById('time-input');
 
-    // Initialize variables and attach event listeners as before
-    let team1Score = 0;
-    let team2Score = 0;
-    let timerInterval;
-    let currentTime = 5400; // Default time in seconds (90 minutes)
+            let team1Score = 0;
+            let team2Score = 0;
+            let timerInterval;
+            let currentTime = 0;
 
-    function updateScoreDisplay() {
-        team1ScoreDisplay.textContent = team1Score;
-        team2ScoreDisplay.textContent = team2Score;
-    }
+            function updateScoreDisplay() {
+                team1ScoreDisplay.textContent = team1Score;
+                team2ScoreDisplay.textContent = team2Score;
+            }
 
-    function formatTime(seconds) {
-        const mins = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-        return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-    }
+            function formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            }
 
-    function updateTimerDisplay() {
-        currentTimeDisplay.textContent = formatTime(currentTime);
-    }
+            function updateTimerDisplay() {
+                currentTimeDisplay.textContent = formatTime(currentTime);
+            }
 
-    document.getElementById('team1-plus').addEventListener('click', () => {
-        team1Score++;
-        updateScoreDisplay();
-    });
+            document.getElementById('team1-plus').addEventListener('click', () => {
+                team1Score++;
+                updateScoreDisplay();
+                sendMessage('team1-score', team1Score);
+            });
 
-    document.getElementById('team1-minus').addEventListener('click', () => {
-        if (team1Score > 0) team1Score--;
-        updateScoreDisplay();
-    });
-
-    document.getElementById('team2-plus').addEventListener('click', () => {
-        team2Score++;
-        updateScoreDisplay();
-    });
-
-    document.getElementById('team2-minus').addEventListener('click', () => {
-        if (team2Score > 0) team2Score--;
-        updateScoreDisplay();
-    });
-
-    document.getElementById('set-time').addEventListener('click', () => {
-        const [mins, secs] = timeInput.value.split(':').map(Number);
-        currentTime = mins * 60 + secs;
-        updateTimerDisplay();
-    });
-
-    document.getElementById('start-timer').addEventListener('click', () => {
-        if (!timerInterval) {
-            timerInterval = setInterval(() => {
-                if (currentTime > 0) {
-                    currentTime--;
-                    updateTimerDisplay();
-                } else {
-                    clearInterval(timerInterval);
-                    timerInterval = null;
+            document.getElementById('team1-minus').addEventListener('click', () => {
+                if (team1Score > 0) {
+                    team1Score--;
+                    updateScoreDisplay();
+                    sendMessage('team1-score', team1Score);
                 }
-            }, 1000);
-        }
-    });
+            });
 
-    document.getElementById('pause-timer').addEventListener('click', () => {
-        clearInterval(timerInterval);
-        timerInterval = null;
-    });
+            document.getElementById('team2-plus').addEventListener('click', () => {
+                team2Score++;
+                updateScoreDisplay();
+                sendMessage('team2-score', team2Score);
+            });
 
-    document.getElementById('reset-timer').addEventListener('click', () => {
-        clearInterval(timerInterval);
-        timerInterval = null;
-        currentTime = 5400;
-        updateTimerDisplay();
-    });
+            document.getElementById('team2-minus').addEventListener('click', () => {
+                if (team2Score > 0) {
+                    team2Score--;
+                    updateScoreDisplay();
+                    sendMessage('team2-score', team2Score);
+                }
+            });
 
-    team1NameInput.addEventListener('input', () => {
-    sendMessage('team1-name', team1NameInput.value); // Only send the message via WebSocket
-});
+            document.getElementById('start-timer').addEventListener('click', () => {
+                if (!timerInterval) {
+                    timerInterval = setInterval(() => {
+                        currentTime++;
+                        updateTimerDisplay();
+                        sendMessage('time', formatTime(currentTime));
+                    }, 1000);
+                }
+            });
+
+            document.getElementById('set-time').addEventListener('click', () => {
+                const [mins, secs] = timeInput.value.split(':').map(Number);
+                currentTime = mins * 60 + secs;
+                updateTimerDisplay();
+                sendMessage('time', formatTime(currentTime));
+            });
 
 
-    team2NameInput.addEventListener('input', () => {
-        document.getElementById('team2-name').textContent = team2NameInput.value;
-    });
+            document.getElementById('pause-timer').addEventListener('click', () => {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            });
 
-    updateScoreDisplay();
-    updateTimerDisplay();
+            document.getElementById('reset-timer').addEventListener('click', () => {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                currentTime = 0;
+                updateTimerDisplay();
+                sendMessage('time', formatTime(currentTime));
+            });
 
-    const ws = new WebSocket('ws://localhost:8080');
 
-    function sendMessage(type, value) {
-        ws.send(JSON.stringify({ type, value }));
-    }
+            team1NameInput.addEventListener('input', () => {
+                sendMessage('team1-name', team1NameInput.value);
+            });
 
-    team1NameInput.addEventListener('input', () => {
-        sendMessage('team1-name', team1NameInput.value);
-    });
 
-    team2NameInput.addEventListener('input', () => {
-        sendMessage('team2-name', team2NameInput.value);
-    });
+            team2NameInput.addEventListener('input', () => {
+                document.getElementById('team2-name').textContent = team2NameInput.value;
+            });
 
-    document.getElementById('team1-plus').addEventListener('click', () => {
-        team1Score++;
-        updateScoreDisplay();
-        sendMessage('team1-score', team1Score);
-    });
+            updateScoreDisplay();
+            updateTimerDisplay();
 
-    // Similar WebSocket messages for other actions...
-});
+            const ws = new WebSocket('ws://localhost:8080');
+
+            function sendMessage(type, value) {
+                ws.send(JSON.stringify({ type, value }));
+            }
+
+            team1NameInput.addEventListener('input', () => {
+                sendMessage('team1-name', team1NameInput.value);
+            });
+
+            team2NameInput.addEventListener('input', () => {
+                sendMessage('team2-name', team2NameInput.value);
+            });
+
+            const team1ColorPicker = document.getElementById('team1-color-picker');
+            const team2ColorPicker = document.getElementById('team2-color-picker');
+
+            team1ColorPicker.addEventListener('change', (event) => {
+                const newColor = event.target.value;
+                document.documentElement.style.setProperty('--team1-color', newColor);
+                sendMessage('team1-color', newColor);
+            });
+
+            team2ColorPicker.addEventListener('change', (event) => {
+                const newColor = event.target.value;
+                document.documentElement.style.setProperty('--team2-color', newColor);
+                sendMessage('team2-color', newColor);
+            });
+
+        });
+
+
+
 
     </script>
 </body>
+
 </html>

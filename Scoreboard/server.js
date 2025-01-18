@@ -3,7 +3,6 @@ const fs = require('fs');
 const path = require('path');
 const WebSocket = require('ws');
 
-// Create an HTTP server
 const server = http.createServer((req, res) => {
     const filePath = path.join(__dirname, req.url === '/' ? 'Scoreboard control.html' : req.url);
 
@@ -22,14 +21,12 @@ const server = http.createServer((req, res) => {
     });
 });
 
-// Attach WebSocket server to the HTTP server
 const wss = new WebSocket.Server({ server });
 
 wss.on('connection', (ws) => {
     console.log('Client connected');
     ws.on('message', (message) => {
         console.log(`Received: ${message}`);
-        // Broadcast the message to all clients
         wss.clients.forEach((client) => {
             if (client.readyState === WebSocket.OPEN) {
                 client.send(message);
@@ -38,7 +35,6 @@ wss.on('connection', (ws) => {
     });
 });
 
-// Start the server on port 8080
 server.listen(8080, () => {
     console.log('Server running at http://localhost:8080/');
 });
