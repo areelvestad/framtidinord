@@ -141,38 +141,26 @@ html {
     </div>
 </div>
 <script>
-    const ws = new WebSocket('ws://localhost:8080');
+const ws = new WebSocket('ws://localhost:8080');
 
-    ws.onmessage = async (event) => {
-        let message;
-        if (event.data instanceof Blob) {
-            const text = await event.data.text();
-            message = JSON.parse(text);
-        } else {
-            message = JSON.parse(event.data);
-        }
+ws.onmessage = async (event) => {
+    const message = JSON.parse(await (event.data instanceof Blob ? event.data.text() : event.data));
 
-        switch (message.type) {
-            case 'team1-name':
-                document.getElementById('team1-name').textContent = message.value;
-                break;
-            case 'team2-name':
-                document.getElementById('team2-name').textContent = message.value;
-                break;
-            case 'team1-score':
-                document.getElementById('team1-score').textContent = message.value;
-                break;
-            case 'team2-score':
-                document.getElementById('team2-score').textContent = message.value;
-                break;
-            case 'team1-color':
-                document.documentElement.style.setProperty('--team1-color', message.value);
-                break;
-            case 'team2-color':
-                document.documentElement.style.setProperty('--team2-color', message.value);
-                break;
+    if (message.type === 'state') {
+        const state = message.value;
 
-        }
-    };
+        // Update team names
+        document.getElementById('team1-name').textContent = state.team1Name;
+        document.getElementById('team2-name').textContent = state.team2Name;
+
+        // Update scores
+        document.getElementById('team1-score').textContent = state.team1Score;
+        document.getElementById('team2-score').textContent = state.team2Score;
+
+        // Update colors
+        document.documentElement.style.setProperty('--team1-color', state.team1Color);
+        document.documentElement.style.setProperty('--team2-color', state.team2Color);
+    }
+};
 
 </script>
