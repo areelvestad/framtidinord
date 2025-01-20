@@ -1,0 +1,7 @@
+Ideer: 
+
+* kommentatorskjerm
+** Viser scoreboard (lag, stilling, tid)
+** Siste mål, gule kort etc.. Fra cup.framtidinord.no??
+*** spillere (med statistikk for turneringen?)
+** 
