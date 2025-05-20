@@ -1,0 +1,73 @@
+<head>
+    <link rel="stylesheet" href="./style.css" />
+    <meta http-equiv="refresh" content="600" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.js"
+        integrity="sha512-d6nObkPJgV791iTGuBoVC9Aa2iecqzJRE0Jiqvk85BhLHAPhWqkuBiQb1xz2jvuHNqHLYoN3ymPfpiB1o+Zgpw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+</head>
+
+
+<h1>Målestasjonen ved Svartfossberget</h1>
+
+<div class="ingress">
+    Oppdatert: <span class="dato">klokken</span>
+</div>
+
+<div class="vannstand box">
+    <div class="bilde"><img src="" alt="" /></div>
+    <div class="inndata">0.00m</div>
+    <div class="tekst">Vannstand</div>
+</div>
+
+<div class="vannforing box">
+    <div class="bilde"><img src="" alt="" /></div>
+    <div class="inndata">0.0m3/s</div>
+    <div class="tekst">Vannføring</div>
+</div>
+
+<div class="vanntemp box">
+    <div class="bilde"><img src="" alt="" /></div>
+    <div class="inndata">0c</div>
+    <div class="tekst">Vanntemperatur</div>
+</div>
+
+<div class="lufttemp box">
+    <div class="bilde"><img src="" alt="" /></div>
+    <div class="inndata">0c</div>
+    <div class="tekst">Lufttemperatur</div>
+</div>
+
+<div style="height: 1920px; width: 1080px;">
+    <canvas id="flomGraf"></canvas>
+</div>
+
+<script>
+
+    let labels = ['vannforing', 'vannstand', 'vanntemp', 'lufttemp']
+    let ItemData = [0.0, 0.00, 0, 0]
+    
+    const data = {
+        labels: labels,
+        datasets: [{
+            data: ItemData,
+            backgroundColor: 'rgb(256, 256, 256)'
+        }]
+    };
+
+    const config = {
+        type: 'bar',
+        data: data
+    };
+
+    const chart = new Chart(
+        document.getElementById('flomGraf'),
+        config
+    );
+
+
+</script>
+
+<script src="./fetch.js"></script>
+
+</html>
