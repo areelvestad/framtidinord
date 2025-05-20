@@ -1,0 +1,8 @@
+html {
+    box-sizing: border-box;
+    font-family: 'Times';
+    font-size: 2rem;
+    font-weight: 200;
+    color: #fff;
+    background: #111;
+  }
