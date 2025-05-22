@@ -1,73 +1,158 @@
-<head>
-    <link rel="stylesheet" href="./style.css" />
+<html lang="no">
+  <head>
+    <meta charset="UTF-8" />
     <meta http-equiv="refresh" content="600" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.js"
-        integrity="sha512-d6nObkPJgV791iTGuBoVC9Aa2iecqzJRE0Jiqvk85BhLHAPhWqkuBiQb1xz2jvuHNqHLYoN3ymPfpiB1o+Zgpw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0/dist/chartjs-plugin-annotation.min.js"></script>
+  </head>
+  <style>
+    :root {
+      --color-text: black;
+      --color-background: rgba(255, 255, 255, 0.8);
+    }
+    html,
+    body {
+      box-sizing: border-box;
+      font-family: "Arial";
+      position: relative;
+      margin: 0;
+      padding: 0;
+    }
 
-</head>
+    .stream-container {
+      position: absolute;
+      overflow: hidden;
+      left: 20px;
+      top: 20px;
+      width: 400px;
+      height: fit-content;
+      padding: 1rem;
+      border-radius: 1rem;
+      background-color: var(--color-background);
+      color: var(--color-text);
+    }
 
+    #flomGraf {
+      height: 400px;
+      padding: 1rem 0.25rem;
+    }
 
-<h1>Målestasjonen ved Svartfossberget</h1>
+    .title {
+      font-size: 3.5rem;
+      font-weight: bold;
+      text-align: center;
+    }
 
-<div class="ingress">
-    Oppdatert: <span class="dato">klokken</span>
-</div>
+    .station {
+      font-size: 1.75rem;
+      text-align: center;
+    }
 
-<div class="vannstand box">
-    <div class="bilde"><img src="" alt="" /></div>
-    <div class="inndata">0.00m</div>
-    <div class="tekst">Vannstand</div>
-</div>
+    .box {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      gap: 0.25rem;
+      font-size: 2rem;
+      font-weight: 600;
+      margin-top: 2rem;
+    }
 
-<div class="vannforing box">
-    <div class="bilde"><img src="" alt="" /></div>
-    <div class="inndata">0.0m3/s</div>
-    <div class="tekst">Vannføring</div>
-</div>
+    .box .tekst {
+      display: block;
+      text-transform: capitalize;
+    }
 
-<div class="vanntemp box">
-    <div class="bilde"><img src="" alt="" /></div>
-    <div class="inndata">0c</div>
-    <div class="tekst">Vanntemperatur</div>
-</div>
+    .bilde img {
+      max-width: 50px;
+      filter: invert(0);
+    }
+    .annotations {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
 
-<div class="lufttemp box">
-    <div class="bilde"><img src="" alt="" /></div>
-    <div class="inndata">0c</div>
-    <div class="tekst">Lufttemperatur</div>
-</div>
+    .annotations > div {
+      font-size: 0.75rem;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+    }
 
-<div style="height: 1920px; width: 1080px;">
-    <canvas id="flomGraf"></canvas>
-</div>
+    .annotations > div > span {
+      display: flex;
+      flex-direction: row;
+      height: 0.75rem;
+      width: 0.75rem;
+      background: blue;
+      border-radius: 50%;
+      margin-right: 0.5rem;
+    }
 
-<script>
+    .annotations > div.middel > span {
+      background: yellow;
+    }
 
-    let labels = ['vannforing', 'vannstand', 'vanntemp', 'lufttemp']
-    let ItemData = [0.0, 0.00, 0, 0]
-    
-    const data = {
-        labels: labels,
-        datasets: [{
-            data: ItemData,
-            backgroundColor: 'rgb(256, 256, 256)'
-        }]
-    };
+    .annotations > div.stor > span {
+      background: orange;
+    }
 
-    const config = {
-        type: 'bar',
-        data: data
-    };
+    .annotations > div.femti > span {
+      background: red;
+    }
 
-    const chart = new Chart(
-        document.getElementById('flomGraf'),
-        config
-    );
+    .attribution {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      font-weight: bold;
+    }
+  </style>
+  <div class="stream-container">
+    <div class="title">Reisaelva</div>
+    <div class="station">📍 Svartfossberget</div>
 
+    <div class="vannstand box">
+      <div class="bilde"><img src="vannstand.png" alt="" /></div>
+      <div class="tekst">Vannstand:</div>
+      <div class="inndata">0.00m</div>
+    </div>
 
-</script>
+    <div class="vannforing box">
+      <div class="bilde"><img src="vannforing.png" alt="" /></div>
+      <div class="tekst">Vannføring:</div>
+      <div class="inndata">0.0m3/s</div>
+    </div>
 
-<script src="./fetch.js"></script>
+    <div class="vanntemp box">
+      <div class="bilde"><img src="vanntemp.png" alt="" /></div>
+      <div class="tekst">Vanntemperatur:</div>
+      <div class="inndata">0c</div>
+    </div>
 
+    <div class="lufttemp box">
+      <div class="bilde"><img src="lufttemp.png" alt="" /></div>
+      <div class="tekst">Lufttemperatur:</div>
+      <div class="inndata">0c</div>
+    </div>
+
+    <div class="canvas">
+      <canvas id="flomGraf"></canvas>
+    </div>
+    <div class="annotations">
+      <div class="middel"><span></span>Middelflom</div>
+      <div class="stor"><span></span>5 års flom</div>
+      <div class="femti"><span></span>50 års flom</div>
+    </div>
+    <div class="attribution">
+      <div class="ingress">Oppdatert: <span class="dato">klokken</span></div>
+      <div class="nve">Data fra NVE</div>
+    </div>
+  </div>
+
+  <script src="./fetch.js"></script>
 </html>
