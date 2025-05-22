@@ -183,8 +183,5 @@ function renderChart(data, labels) {
       }
     });
   }
-  
-  
-
 
 fetchData();
