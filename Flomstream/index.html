@@ -25,7 +25,7 @@
       left: 20px;
       top: 20px;
       width: 400px;
-      height: fit-content;
+      height: calc(100% - 80px);
       padding: 1rem;
       border-radius: 1rem;
       background-color: var(--color-background);
@@ -113,9 +113,12 @@
     }
   </style>
   <div class="stream-container">
+    <div>
     <div class="title">Reisaelva</div>
     <div class="station">📍 Svartfossberget</div>
+</div>
 
+<div>
     <div class="vannstand box">
       <div class="bilde"><img src="vannstand.png" alt="" /></div>
       <div class="tekst">Vannstand:</div>
@@ -139,10 +142,12 @@
       <div class="tekst">Lufttemperatur:</div>
       <div class="inndata">0c</div>
     </div>
+</div>
 
     <div class="canvas">
       <canvas id="flomGraf"></canvas>
     </div>
+    
     <div class="annotations">
       <div class="middel"><span></span>Middelflom</div>
       <div class="stor"><span></span>5 års flom</div>
