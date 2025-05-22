@@ -20,12 +20,15 @@
     }
 
     .stream-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       position: absolute;
       overflow: hidden;
       left: 20px;
       top: 20px;
       width: 400px;
-      height: calc(100% - 80px);
+      height: calc(100% - 75px);
       padding: 1rem;
       border-radius: 1rem;
       background-color: var(--color-background);
@@ -35,6 +38,7 @@
     #flomGraf {
       height: 400px;
       padding: 1rem 0.25rem;
+      margin-right: 1rem;
     }
 
     .title {
@@ -81,6 +85,8 @@
       flex-direction: row;
       justify-content: center;
       align-items: center;
+      font-size: 1rem;
+      font-weight: bold;
     }
 
     .annotations > div > span {
@@ -114,40 +120,40 @@
   </style>
   <div class="stream-container">
     <div>
-    <div class="title">Reisaelva</div>
-    <div class="station">📍 Svartfossberget</div>
-</div>
-
-<div>
-    <div class="vannstand box">
-      <div class="bilde"><img src="vannstand.png" alt="" /></div>
-      <div class="tekst">Vannstand:</div>
-      <div class="inndata">0.00m</div>
+      <div class="title">Reisaelva</div>
+      <div class="station">📍 Svartfossberget</div>
     </div>
 
-    <div class="vannforing box">
-      <div class="bilde"><img src="vannforing.png" alt="" /></div>
-      <div class="tekst">Vannføring:</div>
-      <div class="inndata">0.0m3/s</div>
-    </div>
+    <div>
+      <div class="vannstand box">
+        <div class="bilde"><img src="vannstand.png" alt="" /></div>
+        <div class="tekst">Vannstand:</div>
+        <div class="inndata">0.00m</div>
+      </div>
 
-    <div class="vanntemp box">
-      <div class="bilde"><img src="vanntemp.png" alt="" /></div>
-      <div class="tekst">Vanntemperatur:</div>
-      <div class="inndata">0c</div>
-    </div>
+      <div class="vannforing box">
+        <div class="bilde"><img src="vannforing.png" alt="" /></div>
+        <div class="tekst">Vannføring:</div>
+        <div class="inndata">0.0m3/s</div>
+      </div>
 
-    <div class="lufttemp box">
-      <div class="bilde"><img src="lufttemp.png" alt="" /></div>
-      <div class="tekst">Lufttemperatur:</div>
-      <div class="inndata">0c</div>
+      <div class="vanntemp box">
+        <div class="bilde"><img src="vanntemp.png" alt="" /></div>
+        <div class="tekst">Vanntemperatur:</div>
+        <div class="inndata">0c</div>
+      </div>
+
+      <div class="lufttemp box">
+        <div class="bilde"><img src="lufttemp.png" alt="" /></div>
+        <div class="tekst">Lufttemperatur:</div>
+        <div class="inndata">0c</div>
+      </div>
     </div>
-</div>
 
     <div class="canvas">
       <canvas id="flomGraf"></canvas>
     </div>
-    
+
     <div class="annotations">
       <div class="middel"><span></span>Middelflom</div>
       <div class="stor"><span></span>5 års flom</div>

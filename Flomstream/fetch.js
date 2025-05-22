@@ -83,14 +83,13 @@ function renderChart(data, labels) {
         }]
       },
       options: {
-        // ─── CANVAS TITLE ─────────────────────────────────────────────────────
         plugins: {
           title: {
             display: true,
             text: 'Vannstand siste 14 dager',
             color: '#222',
             font: {
-              size: 18,
+              size: 22,
               weight: '700'
             },
             padding: {
@@ -122,8 +121,6 @@ function renderChart(data, labels) {
           },
           legend: { display: false }
         },
-  
-        // ─── AXES & GRID ───────────────────────────────────────────────────────
         scales: {
           x: {
             grid: {
@@ -131,9 +128,9 @@ function renderChart(data, labels) {
               drawBorder: true
             },
             ticks: {
-              color: '#555',
+              color: 'rgba(0,0,0,0)',
               font: {
-                size: 12,      // X-axis tick font size
+                size: 0,
                 family: 'Arial'
               },
               maxRotation: 0,
@@ -148,7 +145,7 @@ function renderChart(data, labels) {
                 size: 14,
                 weight: '400'
               },
-              padding: { top: 10 }
+              padding: { top: 0 }
             }
           },
           y: {
@@ -162,7 +159,7 @@ function renderChart(data, labels) {
             ticks: {
               color: '#000',
               font: {
-                size: 16,    // Y-axis tick font size
+                size: 16,
                 family: 'Arial'
               },
               beginAtZero: true,
