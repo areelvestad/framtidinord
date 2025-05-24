@@ -28,7 +28,8 @@
       left: 20px;
       top: 20px;
       width: 400px;
-      height: calc(100% - 75px);
+      /* height: calc(100% - 75px); */
+      height: fit-content;
       padding: 1rem;
       border-radius: 1rem;
       background-color: var(--color-background);
@@ -63,6 +64,10 @@
       font-weight: 600;
       margin-top: 2rem;
     }
+
+    .vanntemp, .lufttemp {
+      display: none;
+    } 
 
     .box .tekst {
       display: block;

@@ -5,12 +5,8 @@
 
 <style>
   :root {
-    --color-text: black;
-    --color-background: rgba(255, 255, 255, 0.8);
-  }
-
-  html {
-    background-color: red;
+    --color-flom-text: black;
+    --color-flom-background: rgba(255, 255, 255, 0.8);
   }
 
   .article-container {
@@ -23,12 +19,12 @@
     flex-direction: column;
     justify-content: space-between;
     width: 100%;
-    max-width: 700;
-    height: calc(100% - 75px);
+    max-width: 700px;
+    height: fit-content;
     padding: 1rem;
     border-radius: 1rem;
-    background-color: var(--color-background);
-    color: var(--color-text);
+    background-color: var(--color-flom-background);
+    color: var(--color-flom-text);
   }
 
   #flomGraf {
@@ -39,19 +35,20 @@
 
   .data {
     display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
     gap: 1rem;
     flex-wrap: wrap;
 
     > * {
-        background-color: white;
-        flex: 1;
-        max-width: 600px;
-        display: flex;
-        justify-content: center;
-        padding-block: 1rem;
-        border-radius: 1rem;
+      background-color: white;
+      flex: 1;
+      max-width: 600px;
+      display: flex;
+      justify-content: center;
+      padding-block: 1rem;
+      border-radius: 1rem;
     }
   }
 
@@ -72,7 +69,7 @@
     align-items: center;
     flex-direction: row;
     gap: 0.25rem;
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 600;
     margin-top: 2rem;
   }
@@ -89,11 +86,11 @@
 
   @media screen and (max-width: 400px) {
     .box {
-        font-size: 1.5rem;
+      font-size: 1.5rem;
     }
 
     .bilde img {
-        width: 25px;
+      width: 25px;
     }
   }
   .annotations {
@@ -142,7 +139,6 @@
     justify-content: space-between;
     font-weight: bold;
   }
-
 </style>
 
 <div class="article-container">
@@ -153,25 +149,45 @@
 
   <div class="data">
     <div class="vannstand box">
-      <div class="bilde"><img src="vannstand.png" alt="" /></div>
+      <div class="bilde">
+        <img
+          src="https://vcdn.polarismedia.no/mm-img/a2e5578e044ef64dba73b1a87a5d551e9ed875bc1fece1fa80f2ccdb76f3bd13/1920"
+          alt=""
+        />
+      </div>
       <div class="tekst">Vannstand:</div>
       <div class="inndata">0.00m</div>
     </div>
 
     <div class="vannforing box">
-      <div class="bilde"><img src="vannforing.png" alt="" /></div>
+      <div class="bilde">
+        <img
+          src="https://vcdn.polarismedia.no/mm-img/3797162d529c3d2d0118cf047e6f58907292ad2ad2630d96f1e5d5b8c8a87280/1920"
+          alt=""
+        />
+      </div>
       <div class="tekst">Vannføring:</div>
       <div class="inndata">0.0m3/s</div>
     </div>
 
     <div class="vanntemp box">
-      <div class="bilde"><img src="vanntemp.png" alt="" /></div>
+      <div class="bilde">
+        <img
+          src="https://vcdn.polarismedia.no/mm-img/7c7ddcc4d580953f9f42ca9f0fca4e58cccf01b147f33a9116deb58dcbfafe89/1920"
+          alt=""
+        />
+      </div>
       <div class="tekst">Vanntemperatur:</div>
       <div class="inndata">0c</div>
     </div>
 
     <div class="lufttemp box">
-      <div class="bilde"><img src="lufttemp.png" alt="" /></div>
+      <div class="bilde">
+        <img
+          src="https://vcdn.polarismedia.no/mm-img/42da0ff838a45a24aa8b75e231a69f66a8dceb766a7b2affe1a54f75d7bde22f/1920"
+          alt=""
+        />
+      </div>
       <div class="tekst">Lufttemperatur:</div>
       <div class="inndata">0c</div>
     </div>
