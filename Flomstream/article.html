@@ -23,14 +23,16 @@
     height: fit-content;
     padding: 1rem;
     border-radius: 1rem;
-    background-color: var(--color-flom-background);
-    color: var(--color-flom-text);
+    background-color: var(--color-background);
+    color: var(--color-text);
   }
 
   #flomGraf {
     height: 400px;
     padding: 1rem 0.25rem;
-    margin-right: 1rem;
+    margin-bottom: 1rem;
+    background: whitesmoke;
+    border-radius: 1rem;
   }
 
   .data {
@@ -38,11 +40,10 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 1rem;
     flex-wrap: wrap;
+    height: fit-content;
 
     > * {
-      background-color: white;
       flex: 1;
       max-width: 600px;
       display: flex;
@@ -53,14 +54,14 @@
   }
 
   .title {
-    font-size: 3.5rem;
+    font-size: 3rem;
     font-weight: bold;
     text-align: center;
     font-family: "Segoe UI";
   }
 
   .station {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     text-align: center;
   }
 
@@ -68,6 +69,7 @@
     display: flex;
     align-items: center;
     flex-direction: row;
+    text-wrap: nowrap;
     gap: 0.25rem;
     font-size: 1.5rem;
     font-weight: 600;
@@ -86,7 +88,7 @@
 
   @media screen and (max-width: 400px) {
     .box {
-      font-size: 1.5rem;
+      font-size: 1.25rem;
     }
 
     .bilde img {
@@ -107,8 +109,9 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    font-size: 1rem;
+    font-size: 0.75rem;
     font-weight: bold;
+    text-wrap: nowrap;
   }
 
   .annotations > div > span {
@@ -118,7 +121,7 @@
     width: 0.75rem;
     background: blue;
     border-radius: 50%;
-    margin-right: 0.5rem;
+    margin-right: 0.25rem;
   }
 
   .annotations > div.middel > span {
@@ -209,196 +212,191 @@
 </div>
 
 <script>
-  const endpoint = "https://hydapi.nve.no/api/v1/Observations";
-  const stationID = "208.3.0";
-  const parameters = "17,1000,1001,1003";
-  const resolutionTime = "0";
-  const referenceTime = "P13D/";
+  const endpoint = 'https://hydapi.nve.no/api/v1/Observations';
+const stationID = '208.3.0';
+const parameters = '17,1000,1001,1003';
+const resolutionTime = '0';
+const referenceTime = 'P13D/';
 
-  const vannstand = document.querySelector(".vannstand .inndata");
-  const vannforing = document.querySelector(".vannforing .inndata");
-  const vanntemp = document.querySelector(".vanntemp .inndata");
-  const lufttemp = document.querySelector(".lufttemp .inndata");
-  const klokkeslett = document.querySelector(".dato");
+const vannstand = document.querySelector('.vannstand .inndata');
+const vannforing = document.querySelector('.vannforing .inndata');
+const vanntemp = document.querySelector('.vanntemp .inndata');
+const lufttemp = document.querySelector('.lufttemp .inndata');
+const klokkeslett = document.querySelector('.dato');
 
-  async function fetchData() {
+async function fetchData() {
     const url = `${endpoint}?StationID=${stationID}&Parameter=${parameters}&ResolutionTime=${resolutionTime}&ReferenceTime=${referenceTime}`;
     const res = await fetch(url, {
-      headers: {
-        Accept: "application/json",
-        "X-API-Key": "jrpoH6IPPkahaP4muXID9A==",
-      },
+        headers: {
+            Accept: 'application/json',
+            'X-API-Key': 'jrpoH6IPPkahaP4muXID9A=='
+        }
     });
     const json = await res.json();
 
     const time0 = new Date(json.data[0].observations[0].time);
-    const mins = String(time0.getMinutes()).padStart(2, "0");
+    const mins = String(time0.getMinutes()).padStart(2, '0');
     klokkeslett.textContent = `${time0.getHours() - 1}:${mins}`;
 
     let rawData;
     const labels = [];
     const values = [];
 
-    json.data.forEach((item) => {
-      const lastVal = item.observations[item.observationCount - 1].value;
-      switch (item.parameter) {
-        case 1000:
-          vannstand.textContent = `${lastVal.toFixed(2)}m`;
-          rawData = item.observations;
-          break;
-        case 1001:
-          vannforing.textContent = `${lastVal.toFixed(1)}m³/s`;
-          break;
-        case 1003:
-          vanntemp.textContent = `${Math.round(lastVal)}°`;
-          break;
-        case 17:
-          lufttemp.textContent = `${Math.round(lastVal)}°`;
-          break;
-      }
+    json.data.forEach(item => {
+        const lastVal = item.observations[item.observationCount - 1].value;
+        switch (item.parameter) {
+            case 1000:
+                vannstand.textContent = `${lastVal.toFixed(2)}m`;
+                rawData = item.observations;
+                break;
+            case 1001:
+                vannforing.textContent = `${lastVal.toFixed(1)}m³/s`;
+                break;
+            case 1003:
+                vanntemp.textContent = `${Math.round(lastVal)}°`;
+                break;
+            case 17:
+                lufttemp.textContent = `${Math.round(lastVal)}°`;
+                break;
+        }
     });
 
-    rawData.forEach((entry) => {
-      const d = new Date(entry.time);
-      labels.push(`${d.getDate()}.${d.getMonth() + 1}`);
-      values.push(entry.value);
+    rawData.forEach(entry => {
+        const d = new Date(entry.time);
+        labels.push(`${d.getDate()}.${d.getMonth() + 1}`);
+        values.push(entry.value);
     });
 
     const dailyLabels = [];
     const dailyValues = [];
     for (let i = 0; i < labels.length; i += 23) {
-      dailyLabels.push(labels[i]);
-      dailyValues.push(values[i]);
+        dailyLabels.push(labels[i]);
+        dailyValues.push(values[i]);
     }
 
     renderChart(dailyValues, dailyLabels);
-  }
+}
 
-  function renderChart(data, labels) {
+function renderChart(data, labels) {
     const maxLevel = Math.max(...data);
     const topY = maxLevel > 5.67 ? maxLevel + 1 : 6.67;
-
-    const ctx = document.getElementById("flomGraf").getContext("2d");
+  
+    const ctx = document.getElementById('flomGraf').getContext('2d');
     new Chart(ctx, {
-      type: "line",
+      type: 'line',
       data: {
         labels,
-        datasets: [
-          {
-            label: "Vannstand siste 14 dager",
-            data,
-            borderColor: "rgba(0, 123, 255, 0.8)",
-            borderWidth: 3,
-            tension: 0.3,
-            fill: true,
-            pointRadius: 0,
-          },
-        ],
+        datasets: [{
+          label: 'Vannstand siste 14 dager',
+          data,
+          borderColor: 'rgba(0, 123, 255, 0.8)',
+          borderWidth: 3,
+          tension: 0.3,
+          fill: true,
+          pointRadius: 0
+        }]
       },
       options: {
         plugins: {
           title: {
             display: true,
-            text: "Vannstand siste 14 dager",
-            color: "#222",
+            text: 'Vannstand siste 14 dager',
+            color: '#222',
             font: {
               size: 22,
-              weight: "700",
+              weight: '700'
             },
             padding: {
               top: 10,
-              bottom: 20,
-            },
+              bottom: 20
+            }
           },
           annotation: {
             annotations: {
               yellow: {
-                type: "box",
-                yMin: 4.75,
-                yMax: 5.1,
-                backgroundColor: "rgba(255,235,59,0.3)",
-                borderWidth: 0,
+                type: 'box',
+                yMin: 4.75, yMax: 5.10,
+                backgroundColor: 'rgba(255,235,59,0.3)',
+                borderWidth: 0
               },
               orange: {
-                type: "box",
-                yMin: 5.1,
-                yMax: 5.67,
-                backgroundColor: "rgba(255,152,0,0.3)",
-                borderWidth: 0,
+                type: 'box',
+                yMin: 5.10, yMax: 5.67,
+                backgroundColor: 'rgba(255,152,0,0.3)',
+                borderWidth: 0
               },
               red: {
-                type: "box",
-                yMin: 5.67,
-                yMax: topY,
-                backgroundColor: "rgba(244,67,54,0.3)",
-                borderWidth: 0,
-              },
-            },
+                type: 'box',
+                yMin: 5.67, yMax: topY,
+                backgroundColor: 'rgba(244,67,54,0.3)',
+                borderWidth: 0
+              }
+            }
           },
-          legend: { display: false },
+          legend: { display: false }
         },
         scales: {
           x: {
             grid: {
-              color: "rgba(0,0,0,0)",
-              drawBorder: true,
+              color: 'rgba(0,0,0,0)',
+              drawBorder: true
             },
             ticks: {
-              color: "rgba(0,0,0,0)",
+              color: 'rgba(0,0,0,0)',
               font: {
                 size: 0,
-                family: "Arial",
+                family: 'Arial'
               },
               maxRotation: 0,
               autoSkip: true,
-              maxTicksLimit: 10,
+              maxTicksLimit: 10
             },
             title: {
               display: false,
-              text: "Dato",
-              color: "#333",
+              text: 'Dato',
+              color: '#333',
               font: {
                 size: 14,
-                weight: "400",
+                weight: '400'
               },
-              padding: { top: 0 },
-            },
+              padding: { top: 0 }
+            }
           },
           y: {
             min: 0,
             max: topY,
             grid: {
-              color: "rgba(0,0,0,0)",
-              borderDash: [5, 5],
-              drawBorder: false,
+              color: 'rgba(0,0,0,0)',
+              borderDash: [5,5],
+              drawBorder: false
             },
             ticks: {
-              color: "#000",
+              color: '#000',
               font: {
                 size: 16,
-                family: "Arial",
+                family: 'Arial'
               },
               beginAtZero: true,
-              callback: (v) => `${v} m`,
+              callback: v => `${v} m`
             },
             title: {
               display: false,
-              text: "Vannstand (m)",
-              color: "#333",
+              text: 'Vannstand (m)',
+              color: '#333',
               font: {
                 size: 14,
-                weight: "400",
+                weight: '400'
               },
-              padding: { right: 10 },
-            },
-          },
+              padding: { right: 10 }
+            }
+          }
         },
-
+  
         responsive: true,
-        maintainAspectRatio: false,
-      },
+        maintainAspectRatio: false
+      }
     });
   }
 
-  fetchData();
+fetchData();
 </script>

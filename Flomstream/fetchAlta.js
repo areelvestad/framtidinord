@@ -1,5 +1,5 @@
 const endpoint = 'https://hydapi.nve.no/api/v1/Observations';
-const stationID = '212.9.0';
+const stationID = '212.11.0';
 const parameters = '17,1000,1001,1003';
 const resolutionTime = '0';
 const referenceTime = 'P13D/';
