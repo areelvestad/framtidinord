@@ -218,7 +218,7 @@
   const endpointMeta = "https://hydapi.nve.no/api/v1/Stations";
 
   const parameters = "17,1000,1001,1003"; // lufttemp, vannstand, vannføring, vanntemp
-  const resolutionTime = "0"; // Øyeblikkelig
+  const resolutionTime = "0"; // øyeblikkelig
   const referenceTime = "P13D/"; // siste 13 dager + i dag
 
   // DOM‐referanser
@@ -272,12 +272,17 @@
     });
     const json = await res.json();
 
-    // Oppdater klokkeslett (juster evt. tidssone)
-    const lastTime = new Date(json.data[0].observations.slice(-1)[0].time);
-    const mins = String(lastTime.getMinutes()).padStart(2, "0");
-    elKlokke.textContent = `${lastTime.getHours() - 1}:${mins}`;
+    const wsSerie = json.data.find((item) => item.parameter === 1000);
+    const sisteObs = wsSerie.observations.slice(-1)[0];
+    const v = sisteObs.value;
+    elVannstand.textContent = `${v.toFixed(2)} m`;
 
-    // Les ut siste verdier og samle historikk for vannstand
+    const t = new Date(sisteObs.time);
+    elKlokke.textContent = t.toLocaleTimeString("nb-NO", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
     let rawData;
     json.data.forEach((item) => {
       const v = item.observations.slice(-1)[0].value;
