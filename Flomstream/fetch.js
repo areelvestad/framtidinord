@@ -1,4 +1,4 @@
-const stationID = '208.3.0';               // Stasjons-ID
+const stationID = '212.11.0';               // Stasjons-ID
 const apiKey = 'HGc6Plv0GEigEHBtAk8S7w==';
 const endpointObs = 'https://hydapi.nve.no/api/v1/Observations';
 const endpointMeta = 'https://hydapi.nve.no/api/v1/Stations';
@@ -55,22 +55,35 @@ async function fetchData() {
       'X-API-Key': apiKey
     }
   });
+
   const json = await res.json();
 
+  // --- hent vannstand og tidspunkt ---
   const wsSerie = json.data.find(item => item.parameter === 1000);
-  const sisteObs = wsSerie.observations.slice(-1)[0];
-  const v = sisteObs.value;
-  elVannstand.textContent = `${v.toFixed(2)} m`;
+  if (wsSerie.observations.length) {
+    const sisteObs = wsSerie.observations.at(-1); // riktig: siste element
+    const v = sisteObs.value;
+    elVannstand.textContent = `${v.toFixed(2)} m`;
+    elKlokke.textContent = new Date(sisteObs.time)
+      .toLocaleTimeString('nb-NO', { hour: '2-digit', minute: '2-digit' });
+  }
 
-  const t = new Date(sisteObs.time);
-  elKlokke.textContent = t.toLocaleTimeString('nb-NO', {
-    hour: '2-digit',
-    minute: '2-digit'
-  });
+  const elVannforingContainer = document.querySelector('.vannforing');
+  const elVanntempContainer = document.querySelector('.vanntemp');
+  const elLufttempContainer = document.querySelector('.lufttemp');
 
   let rawData;
   json.data.forEach(item => {
-    const v = item.observations.slice(-1)[0].value;
+    if (!item.observations.length) {
+      
+      // ingen data for denne parameteren
+      if (item.parameter === 17) elLufttempContainer.style.display = 'none';
+      else if (item.parameter === 1003) elVanntempContainer.style.display = 'none';
+      else if (item.parameter === 1001) elVannforingContainer.style.display = 'none';
+      return;
+    }
+    const obs = item.observations.at(-1);
+    const v = obs.value;
     switch (item.parameter) {
       case 1000:
         elVannstand.textContent = `${v.toFixed(2)} m`;
@@ -147,6 +160,12 @@ function renderChart(data, labels) {
               borderWidth: 0
             }
           }
+        },
+        title: {
+          display: true,
+          text: 'Vannstand siste 14 dager',
+          font: { size: 18 },
+          padding: { bottom: 10 }
         },
         legend: { display: false }
       },
